@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Strategy Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Generate a Personalized Marketing Strategy</h1>
+        <form id="quizForm" action="/generate" method="POST">
+
+            <div id="question1" class="question">
+                <label for="brandName">1. What is your brand's name?</label>
+                <input type="text" id="brandName" name="brandName" required>
+                <button type="button" onclick="nextQuestion(1)">Next</button>
+            </div>
+
+            <div id="question2" class="question" style="display: none;">
+                <label for="sector">2. What sector is your brand in?</label>
+                <input type="text" id="sector" name="sector" required>
+                <button type="button" onclick="nextQuestion(2)">Next</button>
+            </div>
+
+            <div id="question3" class="question" style="display: none;">
+                <label for="website">3. Do you have a website?</label><br>
+                <input type="radio" name="website" value="yes" required> Yes<br>
+                <input type="radio" name="website" value="no"> No<br>
+                <button type="button" onclick="nextQuestion(3)">Next</button>
+            </div>
+
+            <div id="question4" class="question" style="display: none;">
+                <label for="instagram">4. Do you have an Instagram presence?</label><br>
+                <input type="radio" name="instagram" value="yes" required> Yes<br>
+                <input type="radio" name="instagram" value="no"> No<br>
+                <button type="button" onclick="nextQuestion(4)">Next</button>
+            </div>
+
+            <div id="question5" class="question" style="display: none;">
+                <label for="whatsappMarketing">5. Do you use WhatsApp for marketing?</label><br>
+                <input type="radio" name="whatsappMarketing" value="yes" required> Yes<br>
+                <input type="radio" name="whatsappMarketing" value="no"> No<br>
+                <button type="button" onclick="nextQuestion(5)">Next</button>
+            </div>
+
+            <div id="question6" class="question" style="display: none;">
+                <label for="seoInvestment">6. Have you invested in SEO?</label><br>
+                <input type="radio" name="seoInvestment" value="yes" required> Yes<br>
+                <input type="radio" name="seoInvestment" value="no"> No<br>
+                <button type="button" onclick="nextQuestion(6)">Next</button>
+            </div>
+
+            <div id="question7" class="question" style="display: none;">
+                <label for="leadGeneration">7. Do you generate leads from your website?</label><br>
+                <input type="radio" name="leadGeneration" value="yes" required> Yes<br>
+                <input type="radio" name="leadGeneration" value="no"> No<br>
+                <button type="button" onclick="nextQuestion(7)">Next</button>
+            </div>
+
+            <div id="question8" class="question" style="display: none;">
+                <label for="audience">8. Who is your target audience?</label><br>
+                <input type="radio" name="audience" value="young-adults" required> Young Adults<br>
+                <input type="radio" name="audience" value="adults"> Adults<br>
+                <input type="radio" name="audience" value="seniors"> Seniors<br>
+                <button type="button" onclick="nextQuestion(8)">Next</button>
+            </div>
+
+            <div id="question9" class="question" style="display: none;">
+                <label for="budget">9. What is your marketing budget?</label><br>
+                <input type="radio" name="budget" value="low" required> Low<br>
+                <input type="radio" name="budget" value="medium"> Medium<br>
+                <input type="radio" name="budget" value="high"> High<br>
+                <button type="button" onclick="nextQuestion(9)">Next</button>
+            </div>
+
+            <div id="question10" class="question" style="display: none;">
+                <label for="goals">10. What are your marketing goals?</label><br>
+                <input type="radio" name="goals" value="brand-awareness" required> Brand Awareness<br>
+                <input type="radio" name="goals" value="sales-conversion"> Sales Conversion<br>
+                <input type="radio" name="goals" value="customer-retention"> Customer Retention<br>
+                <button type="submit">Generate Strategy</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function nextQuestion(questionNum) {
+            // Hide the current question
+            document.getElementById('question' + questionNum).style.display = 'none';
+
+            // Show the next question
+            document.getElementById('question' + (questionNum + 1)).style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
