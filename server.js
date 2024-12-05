@@ -1,111 +1,143 @@
-// Load environment variables from .env file
+// Load environment variables from .env file 
 require('dotenv').config();
 
 // Import required modules
 const express = require("express");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
+const path = require('path');
 
 // Initialize express app
 const app = express();
-
-// Port to listen on
 const port = process.env.PORT || 3000;
 
-// Middleware to parse form data
+// Middleware for form parsing
 app.use(express.urlencoded({ extended: true }));
-// Serve static files (like CSS) from the 'public' folder
-app.use(express.static('public'));
+app.use(express.json());
 
+// Session middleware for authentication
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET, // Your session secret
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 
-// Setup Google Generative AI with the API key from .env
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  console.error("API key is missing. Please check your .env file.");
-  process.exit(1);
-}
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-const generationConfig = {
-  temperature: 0.7,
-  topP: 0.9,
-  topK: 40,
-  maxOutputTokens: 500, // Limit response length
-  responseMimeType: "text/plain",
-};
-
-// Function to generate strategy based on user input
-async function generateStrategy(userInput) {
-  try {
-    const chatSession = model.startChat({ generationConfig });
-
-    const prompt = `
-    Generate a personalized marketing strategy for a high-budget brand based on the following information:
-    1. Brand Name: ${userInput.brandName}
-    2. Sector: ${userInput.sector}
-    3. Website: ${userInput.website}
-    4. Instagram Presence: ${userInput.instagram}
-    5. WhatsApp Marketing: ${userInput.whatsappMarketing}
-    6. SEO Investment: ${userInput.seoInvestment}
-    7. Lead Generation through Website: ${userInput.leadGeneration}
-    8. Target Audience: ${userInput.targetAudience}
-    9. Marketing Budget: ${userInput.marketingBudget}
-    10. Marketing Goals: ${userInput.marketingGoals}
-
-    Provide a detailed marketing strategy in short few words considering the above factors, and include personalized recommendations for customer retention, increasing brand engagement, 
-    `;
-
-    // Send the user input to the AI model
-    const result = await chatSession.sendMessage(prompt);
-    return result.response.text(); // Return the strategy
-  } catch (error) {
-    console.error("Error generating strategy: ", error);
-    return "Error generating strategy. Please try again.";
-  }
-}
-
-// Serve the HTML form
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+// Root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Handle form submission and generate the strategy
-app.post("/generate", async (req, res) => {
-  const userInput = {
-    brandName: req.body.brandName,
-    sector: req.body.sector,
-    website: req.body.website,
-    instagram: req.body.instagram,
-    whatsappMarketing: req.body.whatsappMarketing,
-    seoInvestment: req.body.seoInvestment,
-    leadGeneration: req.body.leadGeneration,
-    targetAudience: req.body.audience, // Added this line for target audience
-    marketingBudget: req.body.budget, // Added this line for marketing budget
-    marketingGoals: req.body.goals, // Added this line for marketing goals
-  };
+// Google login
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-  const strategy = await generateStrategy(userInput);
+// Google OAuth callback
+app.get(
+    '/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        res.redirect('/quiz');
+    }
+);
 
-  // Send the generated strategy back as a response
+// Passport configuration
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3000/auth/google/callback',
+        },
+        (accessToken, refreshToken, profile, done) => done(null, profile)
+    )
+);
 
-  res.send(`
-    <html>
-      <head>
-        <link rel="stylesheet" href="/style.css">
-      </head>
-      <body>
-        <h1>Generated Marketing Strategy for ${userInput.brandName}</h1>
-        <pre>${strategy}</pre>
-        <a href="/">Generate Another Strategy</a>
-      </body>
-    </html>
-  `);
-  
-  
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+
+// Quiz route
+app.get('/quiz', (req, res) => {
+    if (!req.isAuthenticated()) return res.redirect('/');
+    res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
+});
+
+// Function to generate strategy
+async function generateStrategy(userInput) {
+    try {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+            console.error("API key is missing. Check your .env file.");
+            return "Error generating strategy.";
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const generationConfig = {
+            temperature: 0.7,
+            topP: 0.9,
+            topK: 40,
+            maxOutputTokens: 500,
+            responseMimeType: "text/plain",
+        };
+
+        const chatSession = model.startChat({ generationConfig });
+
+        // Build prompt dynamically based on user input
+        const prompt = `
+        Generate a personalized marketing strategy based on the following:
+        1. Brand Name: ${userInput[0] || "Unknown"}
+        2. Sector: ${userInput[1] || "Not specified"}
+        3. Website: ${userInput[2] || "Not provided"}
+        4. Instagram Presence: ${userInput[3]}
+        5. WhatsApp Marketing: ${userInput[4]}
+        6. SEO Investment: ${userInput[5]}
+        7. Lead Generation: ${userInput[6]}
+        8. Target Audience: ${userInput[7]}
+        9. Marketing Budget: ${userInput[8]}
+        10. Marketing Goals: ${userInput[9]}
+        `;
+
+        const result = await chatSession.sendMessage(prompt);
+        return result.response.text();
+    } catch (error) {
+        console.error("Error generating strategy:", error);
+        return "Error generating strategy.";
+    }
+}
+
+// Handle POST request for generating a strategy
+app.post('/generate', async (req, res) => {
+    const userAnswers = req.body.answers;
+
+    if (!userAnswers || userAnswers.length < 10) {
+        return res.status(400).json({ error: "Insufficient data provided." });
+    }
+
+    try {
+        const strategy = await generateStrategy(userAnswers);
+        res.json({ strategy });
+    } catch (error) {
+        res.status(500).json({ error: "Error generating strategy." });
+    }
+});
+
+// Logout route
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
