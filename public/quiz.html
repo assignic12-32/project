@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -165,6 +165,260 @@
             .then(response => response.json())
             .then(data => {
                 addMessage(`Generated Strategy: ${data.strategy}`, 'bot-message');
+            })
+            .catch(() => {
+                addMessage("Error generating your strategy. Please try again.", 'bot-message');
+            });
+        }
+
+        addMessage(questions[currentQuestionIndex], 'bot-message');
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Business Quiz</title>
+    <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 400px;
+            background: #1e1e1e;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            padding: 15px;
+            background: #282828;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #333;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background: #282828;
+        }
+
+        .input-container input, .input-container button {
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .input-container input {
+            flex: 1;
+            background: #444;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .input-container button {
+            background: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .input-container button:hover {
+            background: #45a049;
+        }
+
+        /* Styling for the generated strategy container */
+        .strategy-message {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            word-wrap: break-word;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Animation for a smooth fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Highlight keys in the strategy */
+        .strategy-message strong {
+            color: #ffdd59;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Add decorative styling to individual points */
+        .strategy-message p {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        /* Custom bullet/marker for points */
+        .strategy-message p::before {
+            content: "💡";
+            color: #f39c12;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        /* Make the text responsive */
+        .strategy-message {
+            font-size: calc(1rem + 0.2vw);
+        }
+
+        /* Add a bottom border to the strategy box for better structure */
+        .strategy-message {
+            border-bottom: 4px solid #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">AI Business Quiz</div>
+        <div class="messages" id="messages">
+            <div class="bot-message message">
+                Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
+            </div>
+        </div>
+        <div class="input-container">
+            <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
+            <button onclick="nextQuestion()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        const userInputField = document.getElementById('userInput');
+
+        const questions = [
+            "What is your brand's name?",
+            "What sector is your brand in?",
+            "Do you have a website? (yes/no)",
+            "Do you have an Instagram presence? (yes/no)",
+            "Do you use WhatsApp marketing? (yes/no)",
+            "Do you invest in SEO? (yes/no)",
+            "Does your website generate leads? (yes/no)",
+            "Who is your target audience?",
+            "What is your marketing budget?",
+            "What are your marketing goals?"
+        ];
+
+        let currentQuestionIndex = 0;
+        const answers = [];
+
+        function nextQuestion() {
+            const userAnswer = userInputField.value.trim();
+            if (!userAnswer) return;
+
+            addMessage(userAnswer, 'user-message');
+            answers.push(userAnswer);
+            userInputField.value = '';
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
+            } else {
+                setTimeout(() => {
+                    addMessage("Generating your marketing strategy...", 'bot-message');
+                    submitAnswers();
+                }, 500);
+            }
+        }
+
+        function addMessage(text, className) {
+            const message = document.createElement('div');
+            message.className = `message ${className}`;
+            message.innerHTML = text;
+            messagesContainer.appendChild(message);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Remove asterisks and format the strategy output cleanly
+        function formatStrategy(strategy) {
+            return strategy
+                .split('\n')
+                .map(line => {
+                    if (line.includes(':')) {
+                        const [key, value] = line.split(':');
+                        return `<p><strong>${key.trim()}:</strong> ${value.trim()}</p>`;
+                    }
+                    return `<p>${line}</p>`;
+                })
+                .join('');
+        }
+
+        function submitAnswers() {
+            fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answers }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const formattedStrategy = formatStrategy(data.strategy);
+                addMessage(formattedStrategy, 'strategy-message');
             })
             .catch(() => {
                 addMessage("Error generating your strategy. Please try again.", 'bot-message');

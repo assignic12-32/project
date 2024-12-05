@@ -105,7 +105,10 @@ async function generateStrategy(userInput) {
         8. Target Audience: ${userInput[7]}
         9. Marketing Budget: ${userInput[8]}
         10. Marketing Goals: ${userInput[9]}
-        `;
+         Please do not use  asterisks, or markdown. Provide the strategy in a readable format.`
+        
+        
+        ;
 
         const result = await chatSession.sendMessage(prompt);
         return result.response.text();
