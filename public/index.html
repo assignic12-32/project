@@ -1,182 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Strategy Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Strategy Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
 
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 50px auto;
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 50px auto;
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            color: #333;
-        }
+    h1 {
+      color: #333;
+    }
 
-        .login-button {
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+    .question {
+      margin: 20px 0;
+    }
 
-        .login-button:hover {
-            background-color: #357ae8;
-        }
+    .question input[type="text"],
+    .question input[type="radio"] {
+      margin-top: 10px;
+      display: block;
+    }
 
-        .question {
-            margin: 20px 0;
-        }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
 
-        .question input[type="text"],
-        .question input[type="radio"] {
-            margin-top: 10px;
-            display: block;
-        }
+    button:hover {
+      background-color: #218838;
+    }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Login Section -->
-        <div id="loginSection">
-            <h1>Welcome to the Marketing Strategy Generator</h1>
-            <button class="login-button" onclick="window.location.href = '/auth/google'">
-                Login with Google
-            </button>
-        </div>
+  <div class="container">
+    <h1>Generate Your Marketing Strategy</h1>
+    <form id="quizForm" action="/generate" method="POST">
+      <div id="question1" class="question">
+        <label for="brandName">1. What is your brand's name?</label>
+        <input type="text" id="brandName" name="brandName" required>
+        <button type="button" onclick="nextQuestion(1)">Next</button>
+      </div>
 
-        <!-- Quiz Section -->
-        <div id="quizSection" class="hidden">
-            <h1>Generate Your Marketing Strategy</h1>
-            <form id="quizForm" action="/generate" method="POST">
-                <div id="question1" class="question">
-                    <label for="brandName">1. What is your brand's name?</label>
-                    <input type="text" id="brandName" name="brandName" required>
-                    <button type="button" onclick="nextQuestion(1)">Next</button>
-                </div>
+      <div id="question2" class="question hidden">
+        <label for="sector">2. What sector is your brand in?</label>
+        <input type="text" id="sector" name="sector" required>
+        <button type="button" onclick="nextQuestion(2)">Next</button>
+      </div>
 
-                <div id="question2" class="question hidden">
-                    <label for="sector">2. What sector is your brand in?</label>
-                    <input type="text" id="sector" name="sector" required>
-                    <button type="button" onclick="nextQuestion(2)">Next</button>
-                </div>
+      <div id="question10" class="question hidden">
+        <label>10. What are your marketing goals?</label>
+        <input type="text" name="goals" required>
+        <button type="submit">Generate Strategy</button>
+      </div>
+    </form>
+  </div>
 
-                <div id="question3" class="question hidden">
-                    <label>3. Do you have a website?</label>
-                    <input type="radio" name="website" value="yes" required> Yes
-                    <input type="radio" name="website" value="no"> No
-                    <button type="button" onclick="nextQuestion(3)">Next</button>
-                </div>
-
-                <div id="question4" class="question hidden">
-                    <label>4. Do you have an Instagram presence?</label>
-                    <input type="radio" name="instagram" value="yes" required> Yes
-                    <input type="radio" name="instagram" value="no"> No
-                    <button type="button" onclick="nextQuestion(4)">Next</button>
-                </div>
-
-                <div id="question5" class="question hidden">
-                    <label>5. Do you use WhatsApp marketing?</label>
-                    <input type="radio" name="whatsappMarketing" value="yes" required> Yes
-                    <input type="radio" name="whatsappMarketing" value="no"> No
-                    <button type="button" onclick="nextQuestion(5)">Next</button>
-                </div>
-
-                <div id="question6" class="question hidden">
-                    <label>6. Do you invest in SEO?</label>
-                    <input type="radio" name="seoInvestment" value="yes" required> Yes
-                    <input type="radio" name="seoInvestment" value="no"> No
-                    <button type="button" onclick="nextQuestion(6)">Next</button>
-                </div>
-
-                <div id="question7" class="question hidden">
-                    <label>7. Does your website generate leads?</label>
-                    <input type="radio" name="leadGeneration" value="yes" required> Yes
-                    <input type="radio" name="leadGeneration" value="no"> No
-                    <button type="button" onclick="nextQuestion(7)">Next</button>
-                </div>
-
-                <div id="question8" class="question hidden">
-                    <label>8. Who is your target audience?</label>
-                    <input type="text" name="audience" required>
-                    <button type="button" onclick="nextQuestion(8)">Next</button>
-                </div>
-
-                <div id="question9" class="question hidden">
-                    <label>9. What is your marketing budget?</label>
-                    <input type="text" name="budget" required>
-                    <button type="button" onclick="nextQuestion(9)">Next</button>
-                </div>
-
-                <div id="question10" class="question hidden">
-                    <label>10. What are your marketing goals?</label>
-                    <input type="text" name="goals" required>
-                    <button type="submit">Generate Strategy</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Show the next question
-        function nextQuestion(current) {
-            document.getElementById(`question${current}`).classList.add('hidden');
-            document.getElementById(`question${current + 1}`).classList.remove('hidden');
-        }
-
-        // Display the quiz section if authenticated
-        function onLoginSuccess() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('quizSection').classList.remove('hidden');
-        }
-
-        // Check authentication on page load
-        window.onload = function () {
-            fetch('/isAuthenticated')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.authenticated) {
-                        onLoginSuccess();
-                    }
-                })
-                .catch(error => console.error('Error checking authentication:', error));
-        };
-    </script>
+  <script>
+    function nextQuestion(current) {
+      document.getElementById(`question${current}`).classList.add('hidden');
+      document.getElementById(`question${current + 1}`).classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>
