@@ -56,7 +56,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3000/auth/google/callback',
+            callbackURL: 'https://project-zdfo.vercel.app/auth/google/callback',
         },
         (accessToken, refreshToken, profile, done) => done(null, profile)
     )
