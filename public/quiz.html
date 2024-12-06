@@ -1,180 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Business Quiz</title>
-    <style>
-        /* Base styles */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
 
-        .chat-container {
-            width: 90%;
-            max-width: 400px;
-            background: #1e1e1e;
-            border-radius: 15px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 90vh;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .header {
-            padding: 15px;
-            background: #282828;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .messages {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 80%;
-            line-height: 1.4;
-        }
-
-        .bot-message {
-            align-self: flex-start;
-            background: #333;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background: #4CAF50;
-            color: #fff;
-        }
-
-        .input-container {
-            display: flex;
-            padding: 10px;
-            background: #282828;
-        }
-
-        .input-container input, .input-container button {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-        }
-
-        .input-container input {
-            flex: 1;
-            background: #444;
-            color: #fff;
-            margin-right: 10px;
-        }
-
-        .input-container button {
-            background: #4CAF50;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .input-container button:hover {
-            background: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="header">AI Business Quiz</div>
-        <div class="messages" id="messages">
-            <div class="bot-message message">
-                Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
-            </div>
-        </div>
-        <div class="input-container">
-            <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
-            <button onclick="nextQuestion()">Send</button>
-        </div>
-    </div>
-
-    <script>
-        const messagesContainer = document.getElementById('messages');
-        const userInputField = document.getElementById('userInput');
-
-        const questions = [
-            "What is your brand's name?",
-            "What sector is your brand in?",
-            "Do you have a website? (yes/no)",
-            "Do you have an Instagram presence? (yes/no)",
-            "Do you use WhatsApp marketing? (yes/no)",
-            "Do you invest in SEO? (yes/no)",
-            "Does your website generate leads? (yes/no)",
-            "Who is your target audience?",
-            "What is your marketing budget?",
-            "What are your marketing goals?"
-        ];
-
-        let currentQuestionIndex = 0;
-        const answers = [];
-
-        function nextQuestion() {
-            const userAnswer = userInputField.value.trim();
-            if (!userAnswer) return;
-
-            addMessage(userAnswer, 'user-message');
-            answers.push(userAnswer);
-            userInputField.value = '';
-
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
-            } else {
-                setTimeout(() => {
-                    addMessage("Generating your marketing strategy...", 'bot-message');
-                    submitAnswers();
-                }, 500);
-            }
-        }
-
-        function addMessage(text, className) {
-            const message = document.createElement('div');
-            message.className = `message ${className}`;
-            message.textContent = text;
-            messagesContainer.appendChild(message);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function submitAnswers() {
-            fetch('/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ answers }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                addMessage(`Generated Strategy: ${data.strategy}`, 'bot-message');
-            })
-            .catch(() => {
-                addMessage("Error generating your strategy. Please try again.", 'bot-message');
-            });
-        }
-
-        addMessage(questions[currentQuestionIndex], 'bot-message');
-    </script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -332,6 +156,93 @@
         .strategy-message {
             border-bottom: 4px solid #2980b9;
         }
+        /* Custom scrollbar for the chat messages container */
+.messages::-webkit-scrollbar {
+    width: 10px; /* Width of the vertical scrollbar */
+    background-color: #1e1e1e; /* Background color of the scrollbar track */
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #4CAF50, #2980b9); /* Stylish gradient for the thumb */
+    border-radius: 10px; /* Rounded edges for smooth appearance */
+    border: 2px solid #1e1e1e; /* Adds spacing between track and thumb */
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #45a049, #1abc9c); /* Slight color change on hover */
+}
+
+/* For Firefox scrollbar styling */
+.messages {
+    scrollbar-width: thin; /* Narrower scrollbar */
+    scrollbar-color: #4CAF50 #1e1e1e; /* Thumb and track colors */
+}
+
+/* Optional scrollbar track styling */
+.messages::-webkit-scrollbar-track {
+    background-color: #121212; /* Slightly darker background for the track */
+    border-radius: 10px; /* Rounded track edges for consistency */
+    border: 1px solid #282828; /* Optional border for a polished look */
+} 
+@media screen and (max-width: 600px) {
+    /* Chat container adjustments for smaller screens */
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0; /* Remove rounded corners to fit the screen */
+    }
+
+    /* Header adjustments for better readability on small screens */
+    .header {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    /* Adjust messages container */
+    .messages {
+        padding: 5px;
+    }
+
+    /* Adjust messages for a smaller viewport */
+    .message {
+        font-size: 0.9rem;
+        max-width: 90%;
+    }
+
+    .strategy-message {
+        font-size: 0.85rem;
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    /* Input container adjustments for better spacing */
+    .input-container {
+        padding: 5px;
+    }
+
+    .input-container input {
+        font-size: 0.9rem;
+        padding: 8px;
+        border-radius: 15px;
+    }
+
+    .input-container button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+        border-radius: 15px;
+    }
+
+    /* Scrollbar tweaks for a smaller screen */
+    .messages::-webkit-scrollbar {
+        width: 8px; /* Slightly narrower scrollbar */
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+    }
+}
+
+
     </style>
 </head>
 <body>
