@@ -4,7 +4,7 @@
       { "src": "server.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/quiz", "dest": "/public/index.html" },
+      { "src": "/quiz", "dest": "/server.js" },
       { "src": "/generate", "dest": "/server.js" },
       { "src": "/(.*)", "dest": "/public/$1" }
     ]
