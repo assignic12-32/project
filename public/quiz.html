@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- Viewport meta tag to prevent zooming and scale properly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>AI Business Quiz</title>
   <style>
     /* General Reset */
@@ -13,7 +14,7 @@
       box-sizing: border-box;
     }
 
-    /* Set the background for full-screen effect */
+    /* Set full viewport background */
     html,
     body {
       height: 100%;
@@ -32,31 +33,30 @@
       height: 100%;
     }
 
-    /* Chat Container */
+    /* Fullscreen Chat Container */
     .chat-container {
       background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      height: 100%;
-      width: 100%;
-      max-width: 500px;
+      height: 100vh; /* Full height of viewport */
+      width: 100vw; /* Full width of viewport */
       display: flex;
       flex-direction: column;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     /* Header Section */
     .header {
       background: #282828;
       text-align: center;
-      font-size: 1.3em;
-      padding: 12px;
+      font-size: 1.4em;
+      padding: 10px;
       font-weight: bold;
     }
 
     /* Messages Section */
     .messages {
       flex: 1;
-      padding: 12px;
+      padding: 8px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -66,7 +66,7 @@
     /* Message bubbles */
     .message {
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 8px;
       max-width: 80%;
       line-height: 1.4;
       word-wrap: break-word;
@@ -94,8 +94,8 @@
     }
 
     #userInput {
-      flex: 0.8;
-      padding: 10px;
+      flex: 0.75;
+      padding: 8px;
       font-size: 1rem;
       border: none;
       border-radius: 20px;
@@ -104,63 +104,53 @@
     }
 
     button {
-      padding: 10px;
+      padding: 8px 10px;
       background: #4CAF50;
       color: white;
       border: none;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+      font-size: 1rem;
     }
 
     button:hover {
       background: #45a049;
     }
 
-    /* Responsive Design */
-    /* Mobile View */
+    /* Responsive Design for Mobile/Tablet/Desktop */
     @media (max-width: 480px) {
       .header {
         font-size: 1em;
-        padding: 8px;
       }
 
-      #userInput {
-        font-size: 0.9rem;
-      }
-
+      #userInput,
       button {
         font-size: 0.9rem;
       }
+
+      .messages {
+        padding: 6px;
+      }
     }
 
-    /* Tablet View */
     @media (min-width: 481px) and (max-width: 768px) {
       .header {
-        font-size: 1.1em;
-        padding: 10px;
+        font-size: 1.2em;
       }
 
-      #userInput {
-        font-size: 1rem;
-      }
-
+      #userInput,
       button {
         font-size: 1rem;
       }
     }
 
-    /* Desktop View */
     @media (min-width: 769px) {
       .header {
         font-size: 1.3em;
-        padding: 12px;
       }
 
-      #userInput {
-        font-size: 1.1rem;
-      }
-
+      #userInput,
       button {
         font-size: 1.1rem;
       }
