@@ -17,8 +17,8 @@
     html,
     body {
       height: 100%;
-      background: #121212; /* Full-screen grey background */
-      overflow: hidden; /* Prevent scrolling */
+      background: #121212;
+      overflow: hidden;
       touch-action: manipulation;
     }
 
@@ -34,7 +34,7 @@
 
     /* Chat Container */
     .chat-container {
-      background: #1e1e1e; /* Dark grey for content box */
+      background: #1e1e1e;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       height: 90%;
@@ -63,7 +63,7 @@
       gap: 6px;
     }
 
-    /* Messages style */
+    /* Message bubbles */
     .message {
       padding: 10px;
       border-radius: 10px;
@@ -115,6 +115,55 @@
 
     button:hover {
       background: #45a049;
+    }
+
+    /* Responsive Design */
+    /* Mobile View */
+    @media (max-width: 480px) {
+      .header {
+        font-size: 1em;
+        padding: 8px;
+      }
+
+      #userInput {
+        font-size: 0.9rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Tablet View */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .header {
+        font-size: 1.1em;
+        padding: 10px;
+      }
+
+      #userInput {
+        font-size: 1rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+    }
+
+    /* Desktop View */
+    @media (min-width: 769px) {
+      .header {
+        font-size: 1.3em;
+        padding: 12px;
+      }
+
+      #userInput {
+        font-size: 1.1rem;
+      }
+
+      button {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
@@ -180,3 +229,4 @@
     }, 500);
   }
 </script>
+</html>
