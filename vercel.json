@@ -6,7 +6,11 @@
     "routes": [
       { "src": "/quiz", "dest": "/server.js" },
       { "src": "/generate", "dest": "/server.js" },
-      { "src": "/(.*)", "dest": "/public/$1" }
-    ]
+      { "src": "/(.*)", "dest": "/public/$1" },
+      { "env": {
+    "OPENAI_API_KEY": "AIzaSyBB328788UknvhNRDJIwaNsaA_XCfxZQOo"
+  } }
+    ] 
+    
   }
   

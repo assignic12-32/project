@@ -199,6 +199,46 @@
       background: linear-gradient(to bottom, #4CAF50, #2980b9);
       border-radius: 10px;
     }
+    /* ... (existing CSS) ... */
+
+/* Message Container Scrolling */
+.messages {
+    overflow-y: auto;
+    /* Add scrollbar styling as needed */
+}
+
+/* Input and Button Responsiveness */
+#userInput, button {
+    font-size: 1rem;
+    padding: 10px;
+    /* ... (existing styles) ... */
+}
+
+@media (max-width: 768px) {
+    #userInput, button {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+}
+
+/* Layout Flexibility */
+.chat-container {
+    /* ... (existing styles) ... */
+    flex: 1; /* Make it flexible to fill available space */
+}
+
+/* Font Sizes and Line Heights */
+body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}
   </style>
 </head>
 <body>
