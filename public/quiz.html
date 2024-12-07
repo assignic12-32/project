@@ -1,222 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <!-- Viewport meta tag to prevent zooming and scale properly -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>AI Business Quiz</title>
-  <style>
-    /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Business Quiz</title>
+    <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    /* Set full viewport background */
-    html,
-    body {
-      height: 100%;
-      background: #121212;
-      overflow: hidden;
-      touch-action: manipulation;
-    }
+        .chat-container {
+            width: 90%;
+            max-width: 400px;
+            background: #1e1e1e;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
 
-    /* Base body style */
-    body {
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
+        .header {
+            padding: 15px;
+            background: #282828;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
 
-    /* Fullscreen Chat Container */
-    .chat-container {
-      background: #1e1e1e;
-      height: 100vh; /* Full height of viewport */
-      width: 100vw; /* Full width of viewport */
-      display: flex;
-      flex-direction: column;
-      border-radius: 0;
-      box-shadow: none;
-    }
+        .messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Header Section */
-    .header {
-      background: #282828;
-      text-align: center;
-      font-size: 1.4em;
-      padding: 10px;
-      font-weight: bold;
-    }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
 
-    /* Messages Section */
-    .messages {
-      flex: 1;
-      padding: 8px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+        .bot-message {
+            align-self: flex-start;
+            background: #333;
+        }
 
-    /* Message bubbles */
-    .message {
-      padding: 10px;
-      border-radius: 8px;
-      max-width: 80%;
-      line-height: 1.4;
-      word-wrap: break-word;
-    }
+        .user-message {
+            align-self: flex-end;
+            background: #4CAF50;
+            color: #fff;
+        }
 
-    .bot-message {
-      background: #333;
-      align-self: flex-start;
-    }
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background: #282828;
+        }
 
-    .user-message {
-      background: #4CAF50;
-      color: #fff;
-      align-self: flex-end;
-    }
+        .input-container input, .input-container button {
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+        }
 
-    /* Input Section */
-    .input-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
-      background: #282828;
-      border-top: 2px solid #555;
-    }
+        .input-container input {
+            flex: 1;
+            background: #444;
+            color: #fff;
+            margin-right: 10px;
+        }
 
-    #userInput {
-      flex: 0.75;
-      padding: 8px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 20px;
-      background: #444;
-      color: #fff;
-    }
+        .input-container button {
+            background: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-    button {
-      padding: 8px 10px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      font-size: 1rem;
-    }
+        .input-container button:hover {
+            background: #45a049;
+        }
 
-    button:hover {
-      background: #45a049;
-    }
-
-    /* Responsive Design for Mobile/Tablet/Desktop */
-    @media (max-width: 480px) {
-      .header {
-        font-size: 1em;
-      }
-
-      #userInput,
-      button {
-        font-size: 0.9rem;
-      }
-
-      .messages {
-        padding: 6px;
-      }
-    }
-
-    @media (min-width: 481px) and (max-width: 768px) {
-      .header {
-        font-size: 1.2em;
-      }
-
-      #userInput,
-      button {
-        font-size: 1rem;
-      }
-    }
-
-    @media (min-width: 769px) {
-      .header {
-        font-size: 1.3em;
-      }
-
-      #userInput,
-      button {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
+    </style>
 </head>
-
 <body>
-  <div class="chat-container">
-    <!-- Header Section -->
-    <div class="header">AI Business Quiz</div>
-
-    <!-- Messages Section -->
-    <div class="messages" id="messages">
-      <div class="bot-message message">
-        Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
-      </div>
+    <div class="chat-container">
+        <div class="header">AI Business Quiz</div>
+        <div class="messages" id="messages">
+            <div class="bot-message message">
+                Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
+            </div>
+        </div>
+        <div class="input-container">
+            <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
+            <button onclick="nextQuestion()">Send</button>
+        </div>
     </div>
 
-    <!-- Input Section -->
-    <div class="input-container">
-      <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
-      <button onclick="nextQuestion()">Send</button>
-    </div>
-  </div>
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        const userInputField = document.getElementById('userInput');
+
+        const questions = [
+            "What is your brand's name?",
+            "What sector is your brand in?",
+            "Do you have a website? (yes/no)",
+            "Do you have an Instagram presence? (yes/no)",
+            "Do you use WhatsApp marketing? (yes/no)",
+            "Do you invest in SEO? (yes/no)",
+            "Does your website generate leads? (yes/no)",
+            "Who is your target audience?",
+            "What is your marketing budget?",
+            "What are your marketing goals?"
+        ];
+
+        let currentQuestionIndex = 0;
+        const answers = [];
+
+        function nextQuestion() {
+            const userAnswer = userInputField.value.trim();
+            if (!userAnswer) return;
+
+            addMessage(userAnswer, 'user-message');
+            answers.push(userAnswer);
+            userInputField.value = '';
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
+            } else {
+                setTimeout(() => {
+                    addMessage("Generating your marketing strategy...", 'bot-message');
+                    submitAnswers();
+                }, 500);
+            }
+        }
+
+        function addMessage(text, className) {
+            const message = document.createElement('div');
+            message.className = className; // Fixed this issue
+            message.innerHTML = text;
+            messagesContainer.appendChild(message);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function formatStrategy(strategy) {
+            return strategy
+                .split('\n')
+                .map(line => {
+                    if (line.includes(':')) {
+                        const [key, value] = line.split(':');
+                        return `<p><strong>${key.trim()}:</strong> ${value.trim()}</p>`;
+                    }
+                    return `<p>${line}</p>`;
+                })
+                .join('');
+        }
+
+        function submitAnswers() {
+            fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answers }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const formattedStrategy = formatStrategy(data.strategy);
+                addMessage(formattedStrategy, 'bot-message');
+            })
+            .catch(() => {
+                addMessage("Error generating your strategy. Please try again.", 'bot-message');
+            });
+        }
+
+        addMessage(questions[currentQuestionIndex], 'bot-message');
+    </script>
 </body>
-
-<script>
-  const messagesContainer = document.getElementById('messages');
-  const userInputField = document.getElementById('userInput');
-
-  const questions = [
-    "What is your brand's name?",
-    "What sector is your brand in?",
-    "Do you have a website? (yes/no)",
-    "Do you have an Instagram presence? (yes/no)",
-    "Do you use WhatsApp marketing? (yes/no)",
-    "Do you invest in SEO? (yes/no)",
-    "Does your website generate leads? (yes/no)",
-    "Who is your target audience?",
-    "What is your marketing budget?",
-    "What are your marketing goals?"
-  ];
-
-  let currentQuestionIndex = 0;
-  const answers = [];
-
-  function nextQuestion() {
-    const userAnswer = userInputField.value.trim();
-    if (!userAnswer) return;
-
-    const messageDiv = document.createElement('div');
-    messageDiv.innerText = userAnswer;
-    messageDiv.className = 'user-message';
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    answers.push(userAnswer);
-    userInputField.value = '';
-
-    setTimeout(() => {
-      const botResponse = document.createElement('div');
-      botResponse.innerText = questions[++currentQuestionIndex] || "Generating your strategy...";
-      botResponse.className = 'bot-message';
-      messagesContainer.appendChild(botResponse);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 500);
-  }
-</script>
 </html>

@@ -3,8 +3,11 @@ require('dotenv').config();
 
 // Import required modules
 const express = require("express");
-const path = require("path");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
+const path = require('path');
 
 // Initialize express app
 const app = express();
@@ -14,17 +17,58 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve static files from the "public" directory
+// Session middleware for authentication
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET, // Your session secret
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Root route
 app.get('/', (req, res) => {
-    res.sendFile(path.resolve('public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Google login
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Google OAuth callback
+app.get(
+    '/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        res.redirect('/quiz');
+    }
+);
+
+// Passport configuration
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3000/auth/google/callback',
+        },
+        (accessToken, refreshToken, profile, done) => done(null, profile)
+    )
+);
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 // Quiz route
 app.get('/quiz', (req, res) => {
-    res.sendFile(path.resolve('public', 'quiz.html'));
+    if (!req.isAuthenticated()) return res.redirect('/');
+    res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
 });
 
 // Function to generate strategy
@@ -62,7 +106,10 @@ async function generateStrategy(userInput) {
         9. Marketing Budget: ${userInput[8]}
         10. Marketing Goals: ${userInput[9]}
          Please do not use  asterisks, or markdown. Provide the strategy in a readable format.`
-        
+
+
+        ;
+
         const result = await chatSession.sendMessage(prompt);
         return result.response.text();
     } catch (error) {
@@ -87,10 +134,13 @@ app.post('/generate', async (req, res) => {
     }
 });
 
-// Start the server (for local development only)
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
-}
+// Logout route
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
+});
 
-// Export the app for Vercel
-module.exports = app;
+// Start the server
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
