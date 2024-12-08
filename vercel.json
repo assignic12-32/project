@@ -4,8 +4,7 @@
       { "src": "server.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/api/quiz", "dest": "server.js" },
-      { "handle": "filesystem" },
+      { "src": "/quiz", "dest": "/server.js" },
       { "src": "/(.*)", "dest": "/public/$1" }
     ]
   }
