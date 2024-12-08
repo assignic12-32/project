@@ -1,12 +1,16 @@
 {
+  "name": "nodejs-app",
+  "version": "1.0.0",
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@google/generative-ai": "^0.21.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
-   
     "run": "^1.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   }
 }
-
