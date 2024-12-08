@@ -4,7 +4,6 @@ require('dotenv').config();
 // Import required modules
 const express = require("express");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const session = require('express-session');
 const path = require('path');
 
 // Initialize express app
@@ -14,15 +13,6 @@ const port = process.env.PORT || 3000;
 // Middleware for form parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Session middleware for authentication
-// app.use(
-//     session({
-//         secret: process.env.SESSION_SECRET, // Your session secret
-//         resave: false,
-//         saveUninitialized: true,
-//     })
-// );
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -71,7 +61,7 @@ async function generateStrategy(userInput) {
         8. Target Audience: ${userInput[7]}
         9. Marketing Budget: ${userInput[8]}
         10. Marketing Goals: ${userInput[9]}
-         Please do not use  asterisks, or markdown. Provide the strategy in a readable format.`;
+         Please do not use asterisks, or markdown. Provide the strategy in a readable format.`;
 
         const result = await chatSession.sendMessage(prompt);
         return result.response.text();
@@ -95,14 +85,6 @@ app.post('/generate', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error generating strategy." });
     }
-});
-
-// Logout route
-app.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        res.redirect('/');
-    });
 });
 
 // Start the server
