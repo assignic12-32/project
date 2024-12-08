@@ -74,12 +74,12 @@
 <body>
     <div class="container">
         <!-- Login Section -->
-        <div id="loginSection">
+        <!-- <div id="loginSection">
             <h1>Welcome to the Marketing Strategy Generator</h1>
             <button class="login-button" onclick="window.location.href = '/auth/google'">
                 Login with Google
             </button>
-        </div>
+        </div> -->
 
         <!-- Quiz Section -->
         <div id="quizSection" class="hidden">
@@ -161,22 +161,22 @@
         }
 
         // Display the quiz section if authenticated
-        function onLoginSuccess() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('quizSection').classList.remove('hidden');
-        }
+        // function onLoginSuccess() {
+        //     document.getElementById('loginSection').classList.add('hidden');
+        //     document.getElementById('quizSection').classList.remove('hidden');
+        // }
 
         // Check authentication on page load
-        window.onload = function () {
-            fetch('/isAuthenticated')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.authenticated) {
-                        onLoginSuccess();
-                    }
-                })
-                .catch(error => console.error('Error checking authentication:', error));
-        };
+        // window.onload = function () {
+        //     fetch('/isAuthenticated')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.authenticated) {
+        //                 onLoginSuccess();
+        //             }
+        //         })
+        //         .catch(error => console.error('Error checking authentication:', error));
+        // };
     </script>
 </body>
 </html>
