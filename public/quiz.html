@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>AI Business Quiz</title>
   <style>
-    /* General Reset */
+    /* Reset & Base Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -20,10 +20,11 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      min-height: 100vh;
       padding: 10px;
     }
 
-    /* Chat Container */
+    /* Main Chat Container */
     .chat-container {
       width: 100%;
       max-width: 400px;
@@ -36,7 +37,7 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
     }
 
-    /* Intro CTA Button */
+    /* Intro CTA Section */
     .cta-button {
       text-align: center;
       padding: 12px;
@@ -50,85 +51,93 @@
       width: 90%;
     }
 
-    .cta-button:hover {
-      background-color: #c2f000;
-    }
-
-    /* Message Area */
+    /* Message Section */
     .messages {
       flex: 1;
-      padding: 10px;
+      padding: 8px 12px;
       overflow-y: auto;
-      gap: 8px;
       display: flex;
       flex-direction: column;
+      gap: 8px;
+      height: 60%;
     }
 
-    .bot-message, 
-    .user-message {
+    .message {
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       max-width: 80%;
       font-size: 14px;
+      line-height: 1.3;
     }
 
     .bot-message {
+      align-self: flex-start;
       background: #333;
       color: #fff;
     }
 
     .user-message {
+      align-self: flex-end;
       background: #4CAF50;
       color: #fff;
     }
 
-    /* Input UI */
+    /* Input Section */
     .input-container {
       display: flex;
+      gap: 8px;
       padding: 10px;
+      border-top: 1px solid #444;
       background: #000;
-      border-top: 1px solid #555;
-    }
-
-    .input-container input,
-    .input-container button {
-      padding: 8px;
-      margin-right: 5px;
-      border: none;
-      border-radius: 10px;
     }
 
     .input-container input {
       flex-grow: 1;
-      background: #333;
-      color: white;
+      padding: 8px;
+      border: none;
+      border-radius: 10px;
+      background: #1e1e1e;
+      color: #fff;
       font-size: 14px;
     }
 
     .input-container button {
-      cursor: pointer;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 10px;
       background: #4CAF50;
-      color: white;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
     }
 
-    /* Adjust for Mobile */
-    @media (max-width: 480px) {
-      .messages {
-        gap: 4px;
-      }
-
-      .message {
-        font-size: 12px;
-      }
+    .input-container button:hover {
+      background: #45a049;
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <div class="cta-button" onclick="startQuiz()">Start AI Business Quiz</div>
-    <div class="messages" id="messages" style="display: none;"></div>
+    <!-- CTA Section -->
+    <div class="cta-button">GET AI AUDIT OF YOUR BUSINESS</div>
+
+    <!-- Intro Section -->
+    <div class="intro-section">
+      <h1 style="font-size: 18px; font-weight: bold;">Get Ahead With Your Business</h1>
+      <button class="cta-button" onclick="startQuiz()">Get Started</button>
+    </div>
+
+    <!-- Message Area -->
+    <div class="messages" id="messages" style="display: none;">
+      <div class="bot-message message">
+        Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
+      </div>
+    </div>
+
+    <!-- Input Area -->
     <div class="input-container" style="display: none;">
-      <input type="text" id="userInput" placeholder="Type your response...">
+      <input id="userInput" type="text" placeholder="Type your answer..." autocomplete="off">
       <button onclick="nextQuestion()">Send</button>
     </div>
   </div>
@@ -137,6 +146,7 @@
     const messagesContainer = document.getElementById('messages');
     const userInputField = document.getElementById('userInput');
     const inputContainer = document.querySelector('.input-container');
+    const introSection = document.querySelector('.intro-section');
 
     const questions = [
       "What is your brand's name?",
@@ -155,46 +165,50 @@
     const answers = [];
 
     function startQuiz() {
-      try {
-        document.querySelector('.cta-button').style.display = 'none';
-        messagesContainer.style.display = 'flex';
-        inputContainer.style.display = 'flex';
-        addMessage(questions[currentQuestionIndex], 'bot-message');
-      } catch (error) {
-        console.error("Error starting the quiz:", error);
-      }
+      introSection.style.display = 'none';
+      messagesContainer.style.display = 'flex';
+      inputContainer.style.display = 'flex';
+      addMessage(questions[currentQuestionIndex], 'bot-message');
     }
 
-    function nextQuestion() {
-      try {
-        const userAnswer = userInputField.value.trim();
-        if (!userAnswer) return;
+    async function nextQuestion() {
+      const userAnswer = userInputField.value.trim();
+      if (!userAnswer) return;
 
-        addMessage(userAnswer, 'user-message');
-        answers.push(userAnswer);
-        userInputField.value = '';
+      addMessage(userAnswer, 'user-message');
+      answers.push(userAnswer);
+      userInputField.value = '';
 
-        if (currentQuestionIndex < questions.length - 1) {
-          currentQuestionIndex++;
-          setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
-        } else {
-          addMessage("All responses received. Processing data...", 'bot-message');
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
+      } else {
+        addMessage("Generating your marketing strategy...", 'bot-message');
+
+        try {
+          const response = await fetch('/generate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ answers })
+          });
+
+          const result = await response.json();
+          addMessage(result.strategy, 'bot-message');
+        } catch (error) {
+          console.error('Error:', error);
+          addMessage("Oops! Unable to generate strategy at the moment.", 'bot-message');
         }
-      } catch (error) {
-        console.error("Error processing next question:", error);
       }
     }
 
     function addMessage(text, className) {
-      try {
-        const msg = document.createElement('div');
-        msg.className = className;
-        msg.innerText = text;
-        messagesContainer.appendChild(msg);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      } catch (error) {
-        console.error("Error adding message:", error);
-      }
+      const message = document.createElement('div');
+      message.className = className;
+      message.innerHTML = text;
+      messagesContainer.appendChild(message);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
   </script>
 </body>
