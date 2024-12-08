@@ -16,13 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Session middleware for authentication
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET, // Your session secret
-        resave: false,
-        saveUninitialized: true,
-    })
-);
+// app.use(
+//     session({
+//         secret: process.env.SESSION_SECRET, // Your session secret
+//         resave: false,
+//         saveUninitialized: true,
+//     })
+// );
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
