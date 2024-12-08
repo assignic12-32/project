@@ -18,10 +18,10 @@
         }
 
         .chat-container {
-            width: 90%;
+            width: 100%;
             max-width: 400px;
-            background: #1e1e1e;
-            border-radius: 15px;
+            background: #000;
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -31,10 +31,12 @@
 
         .header {
             padding: 15px;
-            background: #282828;
+            background: #000;
+            color: #fff;
             text-align: center;
             font-size: 1.2em;
             font-weight: bold;
+            border-bottom: 1px solid #444;
         }
 
         .messages {
@@ -43,19 +45,21 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            gap: 10px;
         }
 
         .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 80%;
+            padding: 12px;
+            border-radius: 15px;
+            max-width: 85%;
+            font-size: 0.9em;
             line-height: 1.4;
         }
 
         .bot-message {
             align-self: flex-start;
             background: #333;
+            color: #fff;
         }
 
         .user-message {
@@ -67,26 +71,29 @@
         .input-container {
             display: flex;
             padding: 10px;
-            background: #282828;
-        }
-
-        .input-container input, .input-container button {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
+            background: #000;
+            border-top: 1px solid #444;
         }
 
         .input-container input {
             flex: 1;
-            background: #444;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background: #1e1e1e;
             color: #fff;
             margin-right: 10px;
+            font-size: 0.9em;
         }
 
         .input-container button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 20px;
             background: #4CAF50;
             color: #fff;
             cursor: pointer;
+            font-size: 0.9em;
             font-weight: bold;
         }
 
@@ -94,17 +101,58 @@
             background: #45a049;
         }
 
+        /* Additional styles to match the reference */
+        .cta-button {
+            text-align: center;
+            padding: 15px;
+            background-color: #d4ff00;
+            color: #000;
+            font-weight: bold;
+            border-radius: 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #c2f000;
+        }
+
+        .intro-section {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .intro-section h1 {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <div class="header">AI Business Quiz</div>
-        <div class="messages" id="messages">
+        <!-- CTA Header -->
+        <div class="cta-button">GET AI AUDIT OF YOUR BUSINESS</div>
+
+        <!-- Intro Section -->
+        <div class="intro-section">
+            <h1>Get Ahead With Your Business</h1>
+            <button class="cta-button" onclick="startQuiz()">Get Started</button>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="messages" id="messages" style="display: none;">
             <div class="bot-message message">
                 Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
             </div>
         </div>
-        <div class="input-container">
+
+        <!-- Input Section -->
+        <div class="input-container" style="display: none;">
             <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
             <button onclick="nextQuestion()">Send</button>
         </div>
@@ -113,6 +161,8 @@
     <script>
         const messagesContainer = document.getElementById('messages');
         const userInputField = document.getElementById('userInput');
+        const inputContainer = document.querySelector('.input-container');
+        const introSection = document.querySelector('.intro-section');
 
         const questions = [
             "What is your brand's name?",
@@ -129,6 +179,13 @@
 
         let currentQuestionIndex = 0;
         const answers = [];
+
+        function startQuiz() {
+            introSection.style.display = 'none';
+            messagesContainer.style.display = 'flex';
+            inputContainer.style.display = 'flex';
+            addMessage(questions[currentQuestionIndex], 'bot-message');
+        }
 
         function nextQuestion() {
             const userAnswer = userInputField.value.trim();
@@ -151,7 +208,7 @@
 
         function addMessage(text, className) {
             const message = document.createElement('div');
-            message.className = className; // Fixed this issue
+            message.className = className;
             message.innerHTML = text;
             messagesContainer.appendChild(message);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -185,8 +242,6 @@
                 addMessage("Error generating your strategy. Please try again.", 'bot-message');
             });
         }
-
-        addMessage(questions[currentQuestionIndex], 'bot-message');
     </script>
 </body>
 </html>
