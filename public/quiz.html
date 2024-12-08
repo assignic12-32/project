@@ -1,247 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Business Quiz</title>
-    <style>
-        /* Base styles */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Business Quiz</title>
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .chat-container {
-            width: 100%;
-            max-width: 400px;
-            background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 90vh;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      min-height: 100vh;
+      padding: 10px;
+    }
 
-        .header {
-            padding: 15px;
-            background: #000;
-            color: #fff;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            border-bottom: 1px solid #444;
-        }
+    /* Main Chat Container */
+    .chat-container {
+      width: 100%;
+      max-width: 400px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 95%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    }
 
-        .messages {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    /* Intro CTA Section */
+    .cta-button {
+      text-align: center;
+      padding: 12px;
+      background-color: #d4ff00;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 20px;
+      margin: 10px auto;
+      cursor: pointer;
+      width: 90%;
+    }
 
-        .message {
-            padding: 12px;
-            border-radius: 15px;
-            max-width: 85%;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
+    .cta-button:hover {
+      background-color: #c2f000;
+    }
 
-        .bot-message {
-            align-self: flex-start;
-            background: #333;
-            color: #fff;
-        }
+    /* Message Section */
+    .messages {
+      flex: 1;
+      padding: 8px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 60%;
+    }
 
-        .user-message {
-            align-self: flex-end;
-            background: #4CAF50;
-            color: #fff;
-        }
+    .message {
+      padding: 10px;
+      border-radius: 12px;
+      max-width: 80%;
+      font-size: 14px;
+      line-height: 1.3;
+    }
 
-        .input-container {
-            display: flex;
-            padding: 10px;
-            background: #000;
-            border-top: 1px solid #444;
-        }
+    .bot-message {
+      align-self: flex-start;
+      background: #333;
+      color: #fff;
+    }
 
-        .input-container input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            background: #1e1e1e;
-            color: #fff;
-            margin-right: 10px;
-            font-size: 0.9em;
-        }
+    .user-message {
+      align-self: flex-end;
+      background: #4CAF50;
+      color: #fff;
+    }
 
-        .input-container button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 20px;
-            background: #4CAF50;
-            color: #fff;
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
+    /* Input Section */
+    .input-container {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid #444;
+      background: #000;
+    }
 
-        .input-container button:hover {
-            background: #45a049;
-        }
+    .input-container input {
+      flex-grow: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 10px;
+      background: #1e1e1e;
+      color: #fff;
+      font-size: 14px;
+    }
 
-        /* Additional styles to match the reference */
-        .cta-button {
-            text-align: center;
-            padding: 15px;
-            background-color: #d4ff00;
-            color: #000;
-            font-weight: bold;
-            border-radius: 20px;
-            margin: 10px;
-            cursor: pointer;
-        }
+    .input-container button {
+      padding: 8px 10px;
+      border: none;
+      border-radius: 10px;
+      background: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
 
-        .cta-button:hover {
-            background-color: #c2f000;
-        }
+    .input-container button:hover {
+      background: #45a049;
+    }
 
-        .intro-section {
-            text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
+    /* Mobile Media Queries for smaller devices */
+    @media (max-width: 480px) {
+      .cta-button,
+      .input-container button {
+        font-size: 14px;
+      }
 
-        .intro-section h1 {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-    </style>
+      .messages {
+        gap: 6px;
+      }
+
+      .message {
+        font-size: 12px;
+      }
+
+      .input-container input {
+        font-size: 12px;
+      }
+    }
+
+    /* Loading/Initial CTA Intro adjustments */
+    .intro-section {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+  </style>
 </head>
 <body>
-    <div class="chat-container">
-        <!-- CTA Header -->
-        <div class="cta-button">GET AI AUDIT OF YOUR BUSINESS</div>
+  <div class="chat-container">
+    <!-- CTA Section -->
+    <div class="cta-button">GET AI AUDIT OF YOUR BUSINESS</div>
 
-        <!-- Intro Section -->
-        <div class="intro-section">
-            <h1>Get Ahead With Your Business</h1>
-            <button class="cta-button" onclick="startQuiz()">Get Started</button>
-        </div>
-
-        <!-- Chat Section -->
-        <div class="messages" id="messages" style="display: none;">
-            <div class="bot-message message">
-                Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
-            </div>
-        </div>
-
-        <!-- Input Section -->
-        <div class="input-container" style="display: none;">
-            <input id="userInput" type="text" placeholder="Type your answer here..." autocomplete="off">
-            <button onclick="nextQuestion()">Send</button>
-        </div>
+    <!-- Intro Section -->
+    <div class="intro-section">
+      <h1 style="font-size: 18px; font-weight: bold;">Get Ahead With Your Business</h1>
+      <button class="cta-button" onclick="startQuiz()">Get Started</button>
     </div>
 
-    <script>
-        const messagesContainer = document.getElementById('messages');
-        const userInputField = document.getElementById('userInput');
-        const inputContainer = document.querySelector('.input-container');
-        const introSection = document.querySelector('.intro-section');
+    <!-- Message Area -->
+    <div class="messages" id="messages" style="display: none;">
+      <div class="bot-message message">
+        Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
+      </div>
+    </div>
 
-        const questions = [
-            "What is your brand's name?",
-            "What sector is your brand in?",
-            "Do you have a website? (yes/no)",
-            "Do you have an Instagram presence? (yes/no)",
-            "Do you use WhatsApp marketing? (yes/no)",
-            "Do you invest in SEO? (yes/no)",
-            "Does your website generate leads? (yes/no)",
-            "Who is your target audience?",
-            "What is your marketing budget?",
-            "What are your marketing goals?"
-        ];
+    <!-- Input Area -->
+    <div class="input-container" style="display: none;">
+      <input id="userInput" type="text" placeholder="Type your answer..." autocomplete="off">
+      <button onclick="nextQuestion()">Send</button>
+    </div>
+  </div>
 
-        let currentQuestionIndex = 0;
-        const answers = [];
+  <script>
+    const messagesContainer = document.getElementById('messages');
+    const userInputField = document.getElementById('userInput');
+    const inputContainer = document.querySelector('.input-container');
+    const introSection = document.querySelector('.intro-section');
 
-        function startQuiz() {
-            introSection.style.display = 'none';
-            messagesContainer.style.display = 'flex';
-            inputContainer.style.display = 'flex';
-            addMessage(questions[currentQuestionIndex], 'bot-message');
-        }
+    const questions = [
+      "What is your brand's name?",
+      "What sector is your brand in?",
+      "Do you have a website? (yes/no)",
+      "Do you have an Instagram presence? (yes/no)",
+      "Do you use WhatsApp marketing? (yes/no)",
+      "Do you invest in SEO? (yes/no)",
+      "Does your website generate leads? (yes/no)",
+      "Who is your target audience?",
+      "What is your marketing budget?",
+      "What are your marketing goals?"
+    ];
 
-        function nextQuestion() {
-            const userAnswer = userInputField.value.trim();
-            if (!userAnswer) return;
+    let currentQuestionIndex = 0;
+    const answers = [];
 
-            addMessage(userAnswer, 'user-message');
-            answers.push(userAnswer);
-            userInputField.value = '';
+    function startQuiz() {
+      introSection.style.display = 'none';
+      messagesContainer.style.display = 'flex';
+      inputContainer.style.display = 'flex';
+      addMessage(questions[currentQuestionIndex], 'bot-message');
+    }
 
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
-            } else {
-                setTimeout(() => {
-                    addMessage("Generating your marketing strategy...", 'bot-message');
-                    submitAnswers();
-                }, 500);
-            }
-        }
+    function nextQuestion() {
+      const userAnswer = userInputField.value.trim();
+      if (!userAnswer) return;
 
-        function addMessage(text, className) {
-            const message = document.createElement('div');
-            message.className = className;
-            message.innerHTML = text;
-            messagesContainer.appendChild(message);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+      addMessage(userAnswer, 'user-message');
+      answers.push(userAnswer);
+      userInputField.value = '';
 
-        function formatStrategy(strategy) {
-            return strategy
-                .split('\n')
-                .map(line => {
-                    if (line.includes(':')) {
-                        const [key, value] = line.split(':');
-                        return `<p><strong>${key.trim()}:</strong> ${value.trim()}</p>`;
-                    }
-                    return `<p>${line}</p>`;
-                })
-                .join('');
-        }
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
+      } else {
+        addMessage("Generating your marketing strategy...", 'bot-message');
+      }
+    }
 
-        function submitAnswers() {
-            fetch('/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ answers }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const formattedStrategy = formatStrategy(data.strategy);
-                addMessage(formattedStrategy, 'bot-message');
-            })
-            .catch(() => {
-                addMessage("Error generating your strategy. Please try again.", 'bot-message');
-            });
-        }
-    </script>
+    function addMessage(text, className) {
+      const message = document.createElement('div');
+      message.className = className;
+      message.innerHTML = text;
+      messagesContainer.appendChild(message);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  </script>
 </body>
 </html>
