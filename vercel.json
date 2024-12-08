@@ -5,7 +5,7 @@
     ],
     "routes": [
       { "src": "/quiz", "dest": "/server.js" },
-      { "src": "/generate", "dest": "/server.js" },
+      
       { "src": "/(.*)", "dest": "/public/$1" }
     ] 
     
