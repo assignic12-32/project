@@ -27,20 +27,6 @@
             color: #333;
         }
 
-        .login-button {
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .login-button:hover {
-            background-color: #357ae8;
-        }
-
         .question {
             margin: 20px 0;
         }
@@ -73,16 +59,8 @@
 </head>
 <body>
     <div class="container">
-        <!-- Login Section -->
-        <!-- <div id="loginSection">
-            <h1>Welcome to the Marketing Strategy Generator</h1>
-            <button class="login-button" onclick="window.location.href = '/auth/google'">
-                Login with Google
-            </button>
-        </div> -->
-
         <!-- Quiz Section -->
-        <div id="quizSection" class="hidden">
+        <div id="quizSection">
             <h1>Generate Your Marketing Strategy</h1>
             <form id="quizForm" action="/generate" method="POST">
                 <div id="question1" class="question">
@@ -156,27 +134,9 @@
     <script>
         // Show the next question
         function nextQuestion(current) {
-            document.getElementById(question${current}).classList.add('hidden');
-            document.getElementById(question${current + 1}).classList.remove('hidden');
+            document.getElementById(`question${current}`).classList.add('hidden');
+            document.getElementById(`question${current + 1}`).classList.remove('hidden');
         }
-
-        // Display the quiz section if authenticated
-        // function onLoginSuccess() {
-        //     document.getElementById('loginSection').classList.add('hidden');
-        //     document.getElementById('quizSection').classList.remove('hidden');
-        // }
-
-        // Check authentication on page load
-        // window.onload = function () {
-        //     fetch('/isAuthenticated')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (data.authenticated) {
-        //                 onLoginSuccess();
-        //             }
-        //         })
-        //         .catch(error => console.error('Error checking authentication:', error));
-        // };
     </script>
 </body>
 </html>
