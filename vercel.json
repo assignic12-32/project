@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "server.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+      { "src": "/quiz", "dest": "/server.js" },
+      { "src": "/generate", "dest": "/server.js" },
+      { "src": "/(.*)", "dest": "/public/$1" }
+    ] 
+    
+  }
+  
