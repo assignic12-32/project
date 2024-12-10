@@ -28,13 +28,17 @@
     .chat-container {
       width: 100%;
       max-width: 400px;
-      background: #000;
+      background : #000;
       border-radius: 12px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       height: 95%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+      background-image: url('Astronomy.jpg');
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
     }
 
     /* Intro CTA Section */
@@ -49,6 +53,12 @@
       margin: 10px auto;
       cursor: pointer;
       width: 90%;
+      
+    }
+    button.cta-button{
+      margin-top: 509px;
+      background-color: whitesmoke;
+      margin-left: 22px;
     }
 
     /* Message Section */
@@ -132,11 +142,11 @@
 <body>
   <div class="chat-container">
     <!-- CTA Section -->
-    <div class="cta-button">GET AI AUDIT OF YOUR BUSINESS WITH BIZSOLUTE</div>
+    <div class="cta-button">BizSolute</div>
 
     <!-- Intro Section -->
     <div class="intro-section">
-      <h1 style="font-size: 18px; font-weight: bold;">Empower Your Business with BizSolute</h1>
+      <!-- <h1 style="font-size: 18px; font-weight: bold;">Empower Your Business with BizSolute</h1> -->
       <button class="cta-button" onclick="startQuiz()">Get Started</button>
     </div>
 
