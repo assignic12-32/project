@@ -7,7 +7,7 @@
   <style>
     /* Reset & Base Styles */
     * {
-      box-sizing: border-box;
+      box-sizing: content-box;
       margin: 0;
       padding: 0;
     }
@@ -21,44 +21,24 @@
       align-items: center;
       height: 100vh;
       min-height: 100vh;
-      padding: 10px;
+      padding: 0px;
     }
 
     /* Main Chat Container */
     .chat-container {
-      width: 100%;
-      max-width: 400px;
-      background : #000;
-      border-radius: 12px;
+      width: 140%;
+      max-width: 418px;
+      background: #000;
+      border-radius: 0px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 95%;
+      height: 100%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
       background-image: url('Astronomy.jpg');
-    background-size: cover; /* Ensure the image covers the entire container */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat;
-    }
-
-    /* Intro CTA Section */
-    .cta-button {
-      text-align: center;
-      padding: 12px;
-      background-color: #d4ff00;
-      color: #000;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 20px;
-      margin: 10px auto;
-      cursor: pointer;
-      width: 90%;
-      
-    }
-    button.cta-button{
-      margin-top: 509px;
-      background-color: whitesmoke;
-      margin-left: 22px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     /* Message Section */
@@ -90,6 +70,10 @@
       align-self: flex-end;
       background: #4CAF50;
       color: #fff;
+      padding: 14px;
+    margin: -4px;
+    border-radius: 6px;
+    width: 104px;
     }
 
     /* Input Section */
@@ -124,41 +108,33 @@
 
     .input-container button:hover {
       background: #45a049;
-    } 
+    }
+
     .bot-message {
-  align-self: flex-start;
-  background: #eee; /* Light grey background */
-  color: #000;
-  font-size: 16px; /* Slightly larger font size */
-  line-height: 1.5; /* Increased line-height */
-  padding: 15px; /* Added padding */
-  margin: 5px 0; /* Added margin */
-  border-radius: 12px;
-  font-weight: bold; /* Optional: Emphasize importance */
-  border: 1px solid #ddd; /* Optional: Add a border */
-}
+      align-self: flex-start;
+      background: #eee;
+      color: #000;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 15px;
+      margin: 5px 0;
+      border-radius: 12px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <!-- CTA Section -->
-    <div class="cta-button">BizSolute</div>
-
-    <!-- Intro Section -->
-    <div class="intro-section">
-      <!-- <h1 style="font-size: 18px; font-weight: bold;">Empower Your Business with BizSolute</h1> -->
-      <button class="cta-button" onclick="startQuiz()">Get Started</button>
-    </div>
-
     <!-- Message Area -->
-    <div class="messages" id="messages" style="display: none;">
+    <div class="messages" id="messages">
       <div class="bot-message message">
         Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
       </div>
     </div>
 
     <!-- Input Area -->
-    <div class="input-container" style="display: none;">
+    <div class="input-container">
       <input id="userInput" type="text" placeholder="Type your answer..." autocomplete="off">
       <button onclick="nextQuestion()">Send</button>
     </div>
@@ -168,7 +144,6 @@
     const messagesContainer = document.getElementById('messages');
     const userInputField = document.getElementById('userInput');
     const inputContainer = document.querySelector('.input-container');
-    const introSection = document.querySelector('.intro-section');
 
     const questions = [
       "What is your brand's name?",
@@ -176,7 +151,7 @@
       "Do you have a website?",
       "Do you have an Instagram presence?",
       "Do you use WhatsApp marketing?",
-      "Do you invest in SEO? ",
+      "Do you invest in SEO?",
       "Does your website generate leads?",
       "Who is your target audience?",
       "What is your marketing budget?",
@@ -186,12 +161,10 @@
     let currentQuestionIndex = 0;
     const answers = [];
 
-    function startQuiz() {
-      introSection.style.display = 'none';
-      messagesContainer.style.display = 'flex';
-      inputContainer.style.display = 'flex';
+    // Start the quiz as soon as the page loads
+    window.onload = function() {
       addMessage(questions[currentQuestionIndex], 'bot-message');
-    }
+    };
 
     async function nextQuestion() {
       const userAnswer = userInputField.value.trim();
