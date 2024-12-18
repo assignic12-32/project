@@ -26,9 +26,23 @@ app.use(
 // Initialize passport for Google authentication
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Serve frontend static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve the authentication page (index.html) at the home route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Serve the language selection page
+app.get('/language', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'language-select.html'));
+});
+
+// Serve quiz page which handles both English and Hindi versions
+app.get('/quiz', (req, res) => {
+    const lang = req.query.lang || 'en'; // Default to English if no language specified
+    res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
+});
 
 // Google OAuth setup
 passport.use(
@@ -55,7 +69,8 @@ app.get(
     '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        res.redirect('/quiz');
+        // After successful login, redirect to the language selection page
+        res.redirect('/language');
     }
 );
 
@@ -67,14 +82,8 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Serve quiz page only if user is authenticated
-app.get('/quiz', (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/');
-    res.sendFile(path.join(__dirname, 'public', 'quiz.html'));
-});
-
-// Function to generate marketing strategy
-async function generateStrategy(userInput) {
+// Function to generate marketing strategy using Gemini AI
+async function generateStrategy(userInput, lang) {
     try {
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) {
@@ -86,9 +95,11 @@ async function generateStrategy(userInput) {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const chatSession = model.startChat({ generationConfig: { temperature: 0.7 } });
 
+        const languagePrompt = lang === 'hi' ? "Please generate the strategy in Hindi.  The response should contain no special formatting such as asterisks (*), bold (**), italics (_), or any markdown symbols. Only plain text should be used." : "Please generate the strategy in English.";
+        
         const prompt = `
         Generate a personalized marketing strategy based on the following:
-        1. Brand Name: ${userInput[0] || "Unknown"}
+        1. Business Name: ${userInput[0] || "Unknown"}
         2. Sector: ${userInput[1] || "Not specified"}
         3. Website: ${userInput[2] || "Not provided"}
         4. Instagram Presence: ${userInput[3]}
@@ -98,7 +109,12 @@ async function generateStrategy(userInput) {
         8. Target Audience: ${userInput[7]}
         9. Marketing Budget: ${userInput[8]}
         10. Marketing Goals: ${userInput[9]}
-        Please generate this strategy in plain text, not markdown.
+        ${languagePrompt}
+     Avoid using asterisks(*)  ;
+        Instructions:
+- Please generate the strategy in plain, readable text.
+- Avoid using any special formatting such as asterisks (*), double asterisks (**), or other markdown elements.
+- Provide a clean response with no markdown symbols or unnecessary characters.
         `;
 
         const result = await chatSession.sendMessage(prompt);
@@ -112,12 +128,14 @@ async function generateStrategy(userInput) {
 // POST endpoint to handle strategy generation logic
 app.post('/generate', async (req, res) => {
     const userAnswers = req.body.answers;
+    const lang = req.body.lang || 'en'; // Get the language from the request
+
     if (!userAnswers || userAnswers.length < 10) {
         return res.status(400).json({ error: "Insufficient data provided." });
     }
 
     try {
-        const strategy = await generateStrategy(userAnswers);
+        const strategy = await generateStrategy(userAnswers, lang);
         res.json({ strategy });
     } catch (error) {
         console.error("Error in POST /generate:", error);
@@ -125,5 +143,9 @@ app.post('/generate', async (req, res) => {
     }
 });
 
+
+
 // Start Express server
-app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+});

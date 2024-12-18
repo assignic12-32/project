@@ -2,138 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BizSolute - AI Business Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <title>BizSolute </title>
   <style>
-    /* Reset & Base Styles */
-    * {
-      box-sizing: content-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      min-height: 100vh;
-      padding: 0px;
-    }
-
-    /* Main Chat Container */
-    .chat-container {
-      width: 140%;
-      max-width: 418px;
-      background: #000;
-      border-radius: 0px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
-      background-image: url('Astronomy.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    /* Message Section */
-    .messages {
-      flex: 1;
-      padding: 8px 12px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      height: 60%;
-    }
-
-    .message {
-      padding: 10px;
-      border-radius: 12px;
-      max-width: 80%;
-      font-size: 14px;
-      line-height: 1.3;
-    }
-
-    .bot-message {
-      align-self: flex-start;
-      background: #333;
-      color: #fff;
-    }
-
-    .user-message {
-      align-self: flex-end;
-      background: #4CAF50;
-      color: #fff;
-      padding: 14px;
-    margin: -4px;
-    border-radius: 6px;
-    width: 104px;
-    }
-
-    /* Input Section */
-    .input-container {
-      display: flex;
-      gap: 8px;
-      padding: 10px;
-      border-top: 1px solid #444;
-      background: #000;
-    }
-
-    .input-container input {
-      flex-grow: 1;
-      padding: 8px;
-      border: none;
-      border-radius: 10px;
-      background: #1e1e1e;
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .input-container button {
-      padding: 8px 10px;
-      border: none;
-      border-radius: 10px;
-      background: #4CAF50;
-      color: #fff;
-      cursor: pointer;
-      font-size: 14px;
-      transition: 0.2s;
-    }
-
-    .input-container button:hover {
-      background: #45a049;
-    }
-
-    .bot-message {
-      align-self: flex-start;
-      background: #eee;
-      color: #000;
-      font-size: 16px;
-      line-height: 1.5;
-      padding: 15px;
-      margin: 5px 0;
-      border-radius: 12px;
-      font-weight: bold;
-      border: 1px solid #ddd;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+    .chat-container { width: 100%; background: #000; border-radius: 10px; display: flex; flex-direction: column; min-height: 100vh; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7); padding: .5rem 0; }
+    .header { background-color: #4e4c4c; padding: 15px 0; text-align: center; font-size: 18px; font-weight: bold; color: #fff; border-bottom: 2px solid #4e4c4c;margin-top: -9px; }
+    .messages { flex: 1; padding: 8px 12px; overflow-y: auto; min-height: 100vh; display: flex; flex-direction: column; gap: 8px; padding-bottom: 50px; max-height: 85vh; }
+    .message { padding: 10px; border-radius: 12px; max-width: 80%; font-size: 14px; line-height: 1.3; }
+    .bot-message { align-self: flex-start; background: #eee; color: #000; font-size: 16px; padding: 15px; margin: 5px 0; border-radius: 12px; font-weight: bold; border: 1px solid #ddd; }
+    .user-message { align-self: flex-end; background: #4CAF50; color: #fff; padding: 14px; margin: -4px; border-radius: 6px; max-width: 80%; }
+    .input-container { display: flex; gap: 8px; padding: 5px; background: #000; position: sticky; bottom: 0; z-index: 1; }
+    .input-container input { flex-grow: 1; padding: 8px; border: none; border-radius: 10px; background: #1e1e1e; color: #fff; font-size: 14px; }
+    .input-container button { padding: 11px 13px; border: none; border-radius: 10px; background: #4CAF50; color: #fff; cursor: pointer; font-size: 14px; transition: 0.2s; }
+    .input-container button:hover { background: #45a049; }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <!-- Message Area -->
-    <div class="messages" id="messages">
-      <div class="bot-message message">
-        Hi! Let’s get started with the quiz. Answer the following questions to generate your marketing strategy.
-      </div>
-    </div>
-
-    <!-- Input Area -->
+    <div class="header">BizSolute </div>
+    <div class="messages" id="messages"></div>
     <div class="input-container">
       <input id="userInput" type="text" placeholder="Type your answer..." autocomplete="off">
       <button onclick="nextQuestion()">Send</button>
@@ -143,68 +32,109 @@
   <script>
     const messagesContainer = document.getElementById('messages');
     const userInputField = document.getElementById('userInput');
-    const inputContainer = document.querySelector('.input-container');
+    const lang = new URLSearchParams(window.location.search).get('lang') || 'en'; // Get the language query parameter
 
-    const questions = [
-      "What is your brand's name?",
-      "What sector is your brand in?",
-      "Do you have a website?",
-      "Do you have an Instagram presence?",
-      "Do you use WhatsApp marketing?",
-      "Do you invest in SEO?",
-      "Does your website generate leads?",
-      "Who is your target audience?",
-      "What is your marketing budget?",
-      "What are your marketing goals?"
-    ];
-
-    let currentQuestionIndex = 0;
-    const answers = [];
-
-    // Start the quiz as soon as the page loads
-    window.onload = function() {
-      addMessage(questions[currentQuestionIndex], 'bot-message');
+    const questions = {
+      en: [
+        "Hi Welcome to BizSolute. Tell Me Your Business Name.",
+        "What sector is your brand in?",
+        "Do you have a website?",
+        "Do you have an Instagram presence?",
+        "Are you using WhatsApp for Marketing?",
+        "Do you have a budget allocated for SEO?",
+        "Are you using any Lead Generation methods?",
+        "Who is your target audience?",
+        "What is your marketing budget?",
+        "What are your primary marketing goals?"
+      ],
+      hi: [
+        "नमस्ते! बिजसोल्यूट में आपका स्वागत है। कृपया मुझे अपना व्यवसाय का नाम बताएं।",
+        "आपका ब्रांड किस क्षेत्र में है?",
+        "क्या आपका वेबसाइट है?",
+        "क्या आपका इंस्टाग्राम पर उपस्थिति है?",
+        "क्या आप WhatsApp का उपयोग मार्केटिंग के लिए कर रहे हैं?",
+        "क्या आपने SEO के लिए बजट आवंटित किया है?",
+        "क्या आप किसी लीड जनरेशन विधियों का उपयोग कर रहे हैं?",
+        "आपका लक्ष्य ऑडियंस कौन है?",
+        "आपका मार्केटिंग बजट क्या है?",
+        "आपके मुख्य मार्केटिंग लक्ष्य क्या हैं?"
+      ]
     };
 
-    async function nextQuestion() {
-      const userAnswer = userInputField.value.trim();
-      if (!userAnswer) return;
+    let currentQuestion = 0;
+    const userAnswers = [];
 
-      addMessage(userAnswer, 'user-message');
-      answers.push(userAnswer);
+    function showMessage(text, sender) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+      messageElement.innerText = text;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function nextQuestion() {
+      const userAnswer = userInputField.value.trim();
+      if (userAnswer === "") return;
+
+      userAnswers.push(userAnswer);
       userInputField.value = '';
 
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        setTimeout(() => addMessage(questions[currentQuestionIndex], 'bot-message'), 500);
+      if (currentQuestion < questions[lang].length) {
+        showMessage(userAnswer, 'user');
+        showMessage(questions[lang][currentQuestion], 'bot');
+        currentQuestion++;
       } else {
-        addMessage("Generating your marketing strategy...", 'bot-message');
-
-        try {
-          const response = await fetch('/generate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ answers })
-          });
-
-          const result = await response.json();
-          addMessage(result.strategy, 'bot-message');
-        } catch (error) {
-          console.error('Error:', error);
-          addMessage("Oops! Unable to generate strategy at the moment.", 'bot-message');
-        }
+        showMessage("Thanks for answering the questions. We will now generate a personalized strategy for you.", 'bot');
+        generateStrategy(userAnswers);
       }
     }
 
-    function addMessage(text, className) {
-      const message = document.createElement('div');
-      message.className = className;
-      message.innerHTML = text;
-      messagesContainer.appendChild(message);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    function generateStrategy(userAnswers) {
+  fetch('/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answers: userAnswers, lang: lang })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.strategy) {
+      displayStyledStrategy(data.strategy); // Call function to display the strategy in the desired style
+    } else {
+      showMessage("Error generating strategy. Please try again.", 'bot');
     }
+  })
+  .catch(error => {
+    console.error(error);
+    showMessage("An error occurred while generating the strategy. Please try again.", 'bot');
+  });
+}
+
+function displayStyledStrategy(strategy) {
+  const container = document.createElement('div');
+  container.style.background = '#808080';
+  container.style.color = '#ffffff';
+  container.style.padding = '15px';
+  container.style.margin = '10px 0';
+  container.style.borderRadius = '12px';
+  container.style.border = '1px solid #ddd';
+  container.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+  container.style.lineHeight = '1.5';
+  container.style.fontSize = '16px';
+  container.style.fontWeight = 'bold';
+    
+  container.style.maxWidth = '90%'; // Reduce width
+  container.style.margin = '10px auto'; // Center the container
+  
+  
+  container.innerHTML = strategy.replace(/\n/g, '<br>'); // Maintain line breaks
+
+  messagesContainer.appendChild(container);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+    // Show the first question initially
+    showMessage(questions[lang][currentQuestion], 'bot');
+    currentQuestion++;
   </script>
 </body>
 </html>
