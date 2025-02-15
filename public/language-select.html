@@ -1,45 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BizSolute - Select Language</title>
+  <title>Select Language</title>
+  <link rel="icon" href="favicon_io/favicon.ico" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    /* General Reset */
+    body,
+    html {
       margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #F4F8F5;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .container {
+
+    /* Main Container */
+    .main-container {
+      background-color: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+      /* Full height of the viewport */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      /* Prevent any overflow */
+    }
+
+    /* Header Section */
+    .header-container {
+      background-color: #00A859;
+      /* Dark green header background */
+      padding: 20px;
       text-align: center;
     }
-    .btn {
-      background-color: #4CAF50;
-      color: #fff;
-      padding: 15px 32px;
-      font-size: 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 10px;
-      transition: background-color 0.3s;
+
+    .header {
+      font-size: 18px;
+      font-weight: bold;
+      color: #FFFFFF;
+      margin: 0;
     }
-    .btn:hover {
-      background-color: #45a049;
+
+    /* Content Section */
+    .content {
+      flex: 1;
+      /* Fills the remaining space */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    .greeting {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333333;
+      margin-bottom: 8px;
+    }
+
+    .instruction {
+      font-size: 14px;
+      color: #666666;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* Languages Section */
+    .languages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .language {
+      flex: 1 0 45%;
+      /* Responsive buttons with 2 per row */
+      padding: 10px;
+      font-size: 14px;
+      color: #333333;
+      border: 1px solid #E0E0E0;
+      border-radius: 8px;
+      background-color: #FFFFFF;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .language.active {
+      background-color: #00D061;
+      color: #FFFFFF;
+      border-color: #00D061;
+    }
+
+    .language:hover {
+      border-color: #00D061;
+    }
+
+    /* Footer Buttons */
+    .footer {
+      border-top: 1px solid #E0E0E0;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      background-color: #FFFFFF;
+    }
+
+    .skip-btn {
+      background-color: transparent;
+      color: #666666;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .next-btn {
+      background-color: #00D061;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .next-btn:hover {
+      background-color: #00B750;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Welcome to BizSolute</h1>
-    <p>Select a language to start:</p>
-    <button class="btn" onclick="window.location.href='/quiz?lang=en'">English</button>
-    <button class="btn" onclick="window.location.href='/quiz?lang=hi'">Hindi</button>
+  <div class="main-container">
+    <!-- Header Section -->
+    <div class="header-container">
+      <h1 class="header">Select Language</h1>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <h2 class="greeting" id="greeting"></h2>
+
+
+      <p class="instruction">Please select your preferred language to facilitate communication.</p>
+
+      <!-- Language Options -->
+      <div class="languages">
+        <button class="language active" onclick="window.location.href='/quiz?lang=en'"> English </button>
+
+        <button class="language" onclick="window.location.href='/quiz?lang=hi'">Hindi</button>
+        <button class="language" onclick="window.location.href='/videos-page'">Continue to Videos</button>
+
+
+      </div>
+    </div>
+
+    <!-- Footer Buttons -->
+
   </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fetch the user's name from the backend
+      fetch('/api/get-user-name')
+        .then(response => response.json())
+        .then(data => {
+          // Update the greeting with the user's name
+          document.getElementById('greeting').textContent = `Hello, ${data.name}!`;
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+    });
+    function setLanguage(lang) {
+      localStorage.setItem('language', lang);
+      document.getElementById('continueToVideos').style.display = 'block';
+    }
+
+    function goToVideos() {
+      window.location.href = '/videos'; // Redirects to the videos page
+    }
+  </script>
+
+
+
+
+
 </body>
+
 </html>

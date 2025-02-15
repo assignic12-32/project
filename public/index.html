@@ -1,170 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BizSolute</title>
-    <style>
-        /* Reset & Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-In Screen</title>
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        /* Main Container */
-        .container {
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* Rocket Icon */
-        .rocket-icon {
-            margin-bottom: 44px;
-            width: 120px; /* Set width of the image */
-            height: 120px; /* Set height of the image */
-            background-image: url( "/img/rocketicon.png"); /* Path to your image */
-            background-size: cover; /* Ensure the image covers the div */
-            background-position: center; /* Center the image inside the div */
-            margin-left: 100px;
-            margin-right: auto;
-        }
-
-        /* Heading */
-        h1 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        /* Subheading */
-        .subheading {
-            font-size: 16px;
-            margin-bottom: 30px;
-            color: yellowgreen;
-        }
-
-        /* Get Started Button */
-        .get-started-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #fff;
-            color: #000;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 30px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .get-started-button:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Login Button */
-        .login-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: yellowgreen;
-            color: #000;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
-        .login-button:hover {
-            background-color: #c2e300;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 18px; /* Slightly smaller heading */
-            }
-
-            .subheading {
-                font-size: 14px; /* Slightly smaller subheading */
-            }
-
-            .rocket-icon {
-                width: 100px; /* Scale down the rocket icon */
-                height: 100px; /* Scale down the rocket icon */
-            }
-
-            .get-started-button,
-            .login-button {
-                font-size: 14px; /* Smaller buttons for mobile */
-                padding: 12px; /* Smaller padding for buttons */
-            }
-        }
-
-        /* Extra small devices (Mobile portrait) */
-        @media (max-width: 400px) {
-            .container {
-                max-width: 100%;
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 16px; /* Even smaller heading */
-            }
-
-            .subheading {
-                font-size: 12px; /* Smaller subheading */
-            }
-
-            .rocket-icon {
-                width: 90px; /* Even smaller icon */
-                height: 90px; /* Even smaller icon */
-            }
-
-            .get-started-button,
-            .login-button {
-                font-size: 13px; /* Even smaller buttons */
-                padding: 10px; /* Even smaller padding for buttons */
-            }
-        }
-    </style>
 </head>
+<style>
+  /* General Reset */
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Full-Screen Green Background */
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #00D061;
+    height: 100vh;
+    padding: 20px;
+  }
+
+  /* Back Button Styling */
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+
+  .back-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Logo Styling */
+  .logo {
+    margin-bottom: -6px;
+  }
+
+  .logo-icon {
+    width: 222px;
+    height: 190px;
+    /* background-color: white; */
+    /* border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    margin-left: -25px;
+    margin-top: -17px;
+  }
+
+
+  /* Card Section */
+  .card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Title Styling */
+  .title {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* Social Media Icons */
+  .icons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .icons img {
+    width: 40px;
+    height: 40px;
+    /* border: 2px solid #e0e0e0; */
+    border-radius: 8px;
+    padding: 5px;
+    margin-left: 115px;
+  }
+
+  /* Divider Styling */
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background-color: #e0e0e0;
+    margin: 0 10px;
+  }
+
+  .divider span {
+    color: #666;
+    font-size: 14px;
+  }
+
+  /* Sign-In Button */
+  .sign-in-btn {
+    background-color: #00D061;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .sign-in-btn:hover {
+    background-color: #00b34f;
+  }
+
+  /* Sign-Up Link */
+  .signup-link {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .signup-link a {
+    color: #00D061;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+
 <body>
-    <div class="container">
-        <!-- Rocket Icon -->
-        <div class="rocket-icon"></div>
+  <div class="main-container">
 
-        <!-- Heading -->
-        <h1>Get Ahead in Your Business with AI</h1>
 
-        <!-- Subheading -->
-        <div class="subheading">Get AI Audit of Your Business</div>
-
-        <!-- Login with Google Button -->
-        <button class="login-button" onclick="window.location.href = '/auth/google'">
-            Login with Google
-        </button>
+    <!-- Logo -->
+    <div class="logo">
+      <img src="images/IMG_8694.PNG" alt="Logo" class="logo-icon">
     </div>
+    <link rel="icon" href="favicon_io/favicon.ico" />
+
+    <!-- Card Section -->
+    <div class="card">
+      <h1 class="title">Let's You In</h1>
+      <!-- Sign-In Button -->
+      <button class="sign-in-btn" onclick="window.location.href='/auth/google'">Sign In With Google</button>
+    </div>
+  </div>
+
 </body>
+
 </html>

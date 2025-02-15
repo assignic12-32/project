@@ -1,80 +1,253 @@
-/* Global Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 20px;
-    color: #333;
-  }
-  
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: #2c3e50;
+/************************ 6.let-you-screen-in CSS ***************************/
+.let-you-page-main {
+    position: relative;
+    background-color: #F5F5F5; /* Replace with the desired background color */
+    height: 100vh;
+}
+
+.let-you-screen-main {
+    background-image: url('images/let-you-screen-main-img.jpg');
+    background-repeat: no-repeat;
+    background-position: top center;
+    height: 375px;
+    position: relative;
+    background-color: #00D061;
+}
+
+body.dark-mode .let-you-screen-main {
+    background-image: url('images/let-you-screen-main-img-dark.jpg');
+}
+
+.Amigo_img_main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.footer_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5F5;
+}
+
+.Amigo_img {
+    background-color: #FFFFFF; /* Primary color */
+    padding: 16px;
+    border-radius: 24px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn2 {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.back-btn h1 {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    padding-left: 12px;
+}
+
+.lets_you_in_box {
+    padding: 32px 16px;
+    background-color: #FFFFFF;
+    border-radius: 24px;
+    z-index: 50;
+    position: absolute;
+    width: calc(100% - 24px) !important;
+    transform: translate(0%, 50%);
+}
+
+#mobile:focus {
+    box-shadow: none !important;
+}
+
+.lets_you_in_box2 {
+    top: 85px;
+}
+
+.lets_you_in_box3 {
+    top: 45px;
+}
+
+.lets_you_in_box4 {
+    top: 10px;
+}
+
+.lets_you_in_text {
     text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  h2 {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #2980b9;
-    margin-top: 30px;
-  }
-  
-  .section {
-    margin-bottom: 20px;
-  }
-  
-  .section h3 {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #34495e;
-    margin-bottom: 10px;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  ul li {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    line-height: 1.6;
-  }
-  
-  .note {
-    font-size: 1.1em;
-    color: #7f8c8d;
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #ecf0f1;
+    color: #000000; /* Text color */
+    font-size: 24px;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 36px;
+}
+
+.icons_main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 24px 0;
+}
+
+.icons_main2 {
+    padding-bottom: 0;
+}
+
+.icons {
+    border: 2px solid #E0E0E0; /* Border color */
+    padding: 12px;
     border-radius: 8px;
-  }
-  
-  a {
+}
+
+.apple-main {
+    border: 2px solid #E0E0E0;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.apple {
+    filter: brightness(0);
+}
+
+.or {
+    text-align: center;
+    position: relative;
+}
+
+.or p {
+    color: #A0A0A0; /* Sub-text color */
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
     display: inline-block;
-    padding: 12px 25px;
-    margin-top: 30px;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+    background-color: #FFFFFF; /* Primary color */
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.or::before,
+.or::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 50%;
+    height: 2px;
+    background-color: #E0E0E0; /* Border color */
+    z-index: 0;
+}
+
+.or::before {
+    left: 0;
+}
+
+.or::after {
+    right: 0;
+}
+
+.sign_with_pass_btn {
+    padding: 16px 0;
+    width: 100%;
+    background-color: #00D061; /* Green button color */
+    border-radius: 12px;
+    color: #FFFFFF;
     text-align: center;
-    border-radius: 5px;
-  }
-  
-  a:hover {
-    background-color: #2980b9;
-  }
-  
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    margin-top: 24px;
+}
+
+#let-you-footer {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 600px;
+    bottom: 0;
+    padding: 16px 0;
+    z-index: 40;
+}
+
+.block-footer p {
+    color: #A0A0A0; /* Sub-text color */
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    line-height: 24px;
+    padding: 0 16px;
+}
+
+.block-footer a {
+    color: #000000; /* Text color */
+    font-weight: 700;
+}
+
+/************************ 7.Sign in CSS ***************************/
+#or-id {
+    margin-top: 24px;
+}
+
+.intl-tel-input.allow-dropdown input[type=tel] {
+    border: none;
+    background: #E0E0E0; /* Input background color */
+    height: 48px;
+    border-radius: 12px;
+    outline: none;
+    font-family: "Satoshi", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    width: 100%;
+}
+
+.form-control {
+    border: none;
+    background: #E0E0E0;
+    height: 48px;
+    border-radius: 12px;
+    outline: none;
+    font-family: "Satoshi", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.form-group {
+    padding-top: 24px;
+}
+
+.form-group input::placeholder {
+    color: #A0A0A0; /* Sub-text color */
+}
+
+::placeholder {
+    color: #A0A0A0;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: #E0E0E0;
+    color: #000000; /* Text color */
+}

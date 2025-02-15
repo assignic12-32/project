@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BizSolute Video Player</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      background-color: #4caf50;
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .video-container {
+      width: 90%;
+      max-width: 600px;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background: white;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+    }
+
+    .playlist-container {
+      width: 90%;
+      max-width: 600px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">BizSolute</div>
+
+  <div class="video-container">
+    <iframe id="videoPlayer" src="" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+
+  <div class="playlist-container" id="playlist"></div>
+
+  <button id="showMore">Show More</button>
+
+  <script>
+    let nextPageToken = null;
+
+    // Function to open the video in a new tab within your site
+    function playVideoInNewTab(videoId) {
+      const videoPlayerUrl = `videoPlayer.html?videoId=${videoId}`;
+      window.open(videoPlayerUrl, '_blank');
+    }
+
+    // Show more videos when button is clicked
+    document.getElementById('showMore').addEventListener('click', fetchVideos);
+
+    // Initial fetch
+    fetchVideos();
+  </script>
+  <script src="javascript.js"></script>
+</body>
+
+</html>
