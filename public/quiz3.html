@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>BizAssist-Ai Audit for SMBs</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F0F0F0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #4CAF50;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #f9f9f9;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 80%;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: #4CAF50;
+      color: #fff;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      background: #fff;
+      border-top: 1px solid #ddd;
+    }
+
+    .input-container input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background: #f1f1f1;
+      font-size: 14px;
+    }
+
+    .input-container button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 20px;
+      background: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .input-container button:hover {
+      background: #45a049;
+    }
+
+    /* Modal Form Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      background: #f9f9f9;
+    }
+
+    .modal button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .modal button:hover {
+      background: #45a049;
+    }
+
+    /* Consultation Button Container */
+    #consultation-button-container {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 999;
+    }
+
+    #consultation-button {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 30px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #consultation-button:hover {
+      background-color: #45a049;
+    }
+
+    /* Scroll to Latest Arrow Button */
+    .scroll-to-latest {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: background-color 0.3s;
+      width: 52px;
+    height: 50px;
+    padding-bottom: 31px;
+    padding-left: 21px;
+
+
+    }
+
+    .scroll-to-latest:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chat-container">
+    <div class="header">BizSolute</div>
+    <div class="messages" id="messages"></div>
+    <!-- Scroll to latest button -->
+    <div class="scroll-to-latest" onclick="scrollToLatest()">
+      &#8595;
+    </div>
+    <div class="input-container">
+      <input id="userInput" type="text" placeholder="Type your answer..." autocomplete="off">
+      <button onclick="nextQuestion()">Send</button>
+    </div>
+  </div>
+
+  <!-- Button to get consultation -->
+  <div id="consultation-button-container">
+    <button id="consultation-button">Get Expert Consultation</button>
+  </div>
+
+  <!-- Modal for Consultation -->
+  <div id="consultation-modal" class="modal">
+    <div class="modal-content">
+      <h3>Request Expert Consultation</h3>
+      <input type="text" id="consultation-name" placeholder="Your Name" required />
+      <input type="tel" id="consultation-phone" placeholder="Your Phone Number (10 digits)" pattern="\d{10}"
+        maxlength="10" required />
+      <button id="submit-consultation">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesContainer = document.getElementById('messages');
+    const userInputField = document.getElementById('userInput');
+    const lang = new URLSearchParams(window.location.search).get('lang') || 'en'; // Get the language query parameter
+    const questions = {
+  en: [
+    "Welcome to BizSolute! What is the name of your business?",
+    "Which product or service do you want the 15-day plan for?",
+    "What is your target audience?",
+    "What platform will you post on (Instagram, LinkedIn, etc)?",
+    "Any theme or special promotion you'd like included?"
+  ],
+  hi: [
+    "बिज़सोल्यूट में आपका स्वागत है! अपने व्यवसाय का नाम बताएं।",
+    "आप किस उत्पाद या सेवा के लिए 15-दिवसीय योजना चाहते हैं?",
+    "आपका लक्षित दर्शक कौन है?",
+    "आप किस प्लेटफॉर्म पर पोस्ट करेंगे (इंस्टाग्राम, लिंक्डइन आदि)?",
+    "कोई थीम या विशेष प्रचार है जिसे आप शामिल करना चाहते हैं?"
+  ]
+};
+
+
+
+    let currentQuestion = 0;
+    const userAnswers = [];
+
+    function showMessage(text, sender) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+      messageElement.innerText = text;
+      messagesContainer.appendChild(messageElement);
+      scrollToLatest();
+    }
+
+    function scrollToLatest() {
+      // Scroll to the bottom of the chat container
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Ensure the input field is always visible
+      document.querySelector('.input-container').scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    function nextQuestion() {
+      const userAnswer = userInputField.value.trim();
+      if (userAnswer === "") return;
+
+      userAnswers.push(userAnswer);
+      userInputField.value = '';
+
+      if (currentQuestion < questions[lang].length) {
+        showMessage(userAnswer, 'user');
+        showMessage(questions[lang][currentQuestion], 'bot');
+        currentQuestion++;
+      } else {
+        if (lang === 'hi') {
+  showMessage("उत्तर देने के लिए धन्यवाद। अब हम आपके लिए सोशल मीडिया कैप्शन तैयार करेंगे।", 'bot');
+} else {
+  showMessage("  generating social media plan for you.", 'bot');
+}
+
+        generateStrategy(userAnswers);
+      }
+
+      // After sending the message, scroll to the latest message
+      scrollToLatest();
+    }
+
+    function generateStrategy(userAnswers) {
+      fetch('/generate-15day-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: userAnswers, lang: lang })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.strategy) {
+            displayStyledStrategy(data.strategy); // Call function to display the strategy in the desired style
+          } else {
+            showMessage("Error generating strategy. Please try again.", 'bot');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          showMessage("An error occurred while generating the strategy. Please try again.", 'bot');
+        });
+    }
+
+    function displayStyledStrategy(strategy) {
+      const container = document.createElement('div');
+      container.style.background = '#00B894';
+      container.style.color = '#333';
+      container.style.padding = '15px';
+      container.style.margin = '10px 0';
+      container.style.borderRadius = '12px';
+      container.style.border = '1px solid #ddd';
+      container.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+      container.style.lineHeight = '1.5';
+      container.style.fontSize = '16px';
+      container.style.fontWeight = 'bold';
+      container.style.maxWidth = '90%';
+      container.style.margin = '10px auto';
+
+      container.innerHTML = strategy.replace(/\n/g, '<br>');
+
+      messagesContainer.appendChild(container);
+      scrollToLatest();
+
+      // Show the consultation button
+      document.getElementById('consultation-button-container').style.display = 'block';
+    }
+
+    // Show modal for consultation form
+    document.getElementById("consultation-button").addEventListener("click", function () {
+      document.getElementById("consultation-modal").style.display = 'flex';
+    });
+
+    // Submit consultation form with validation
+    document.getElementById("submit-consultation").addEventListener("click", function () {
+      const name = document.getElementById("consultation-name").value.trim();
+      const phone = document.getElementById("consultation-phone").value.trim();
+
+      // Validate name and phone fields
+      if (name === "" || phone === "") {
+        showMessage("Please fill in both fields.", 'bot');
+        return;
+      }
+
+      // Validate phone number is exactly 10 digits
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(phone)) {
+        showMessage("Please enter a valid 10-digit phone number.", 'bot');
+        return;
+      }
+
+      // Send consultation data to the backend
+      fetch('/consultation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showMessage("Consultation request submitted successfully!", 'bot');
+            document.getElementById("consultation-modal").style.display = 'none'; // Close modal
+          } else {
+            showMessage("Error submitting consultation request. Please try again.", 'bot');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          showMessage("Error submitting consultation request. Please try again.", 'bot');
+        });
+    });
+
+    // Close modal when clicking outside of it
+    window.onclick = function (event) {
+      if (event.target === document.getElementById("consultation-modal")) {
+        document.getElementById("consultation-modal").style.display = 'none';
+      }
+    };
+
+    // Show the first question initially
+    window.onload = function () {
+      if (currentQuestion === 0) {
+        showMessage(questions[lang][currentQuestion], 'bot');
+        currentQuestion++; // Increment to avoid showing the first message twice
+      }
+    };
+  </script>
+</body>
+
+</html>

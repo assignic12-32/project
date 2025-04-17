@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0;
+        }
+        /* Ensure header is fixed at the top */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4dff5c;
+    z-index: 1000; /* Ensures it's always on top */
+    padding: 10px 0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Push the content down so it doesn't hide behind header */
+.video-list {
+    margin-top: 60px; /* Adjust according to header height */
+}
+
+/* Ensure thumbnails are not hidden */
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.video-container {
+    margin-top: 70px; /* Adjust so it doesn’t overlap with the header */
+    padding: 16px;
+    width: 90%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.video-card {
+    cursor: pointer;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.thumbnail-container {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background: #e5e5e5;
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.video-title {
+    font-size: 8px;
+    font-weight: 500;
+    color: #0f0f0f;
+    margin-top: 8px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+    .video-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .video-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 3px 4px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .video-details {
+            display: flex;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e5e5e5;
+            flex-shrink: 0;
+        }
+
+        .video-info {
+            flex-grow: 1;
+        }
+
+        .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #0f0f0f;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .channel-name, .video-meta {
+            font-size: 12px;
+            color: #606060;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 4px;
+        }
+
+        .meta-dot::before {
+            content: "•";
+            margin: 0 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <header>BizAssist Academy</header>
+    <!-- <div class="video-container">
+        <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div> -->
+    <div class="playlist-container" id="playlist"></div>
+    <button id="showMore">Show More</button>
+    <script src="javascript.js"></script>
+</body>
+</html>

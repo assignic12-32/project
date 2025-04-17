@@ -1,0 +1,128 @@
+v<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-top: 10px;
+            padding: 0 20px;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .back-button:hover {
+            background: #1b5e20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-container">
+        <button class="back-button" onclick="window.location.href='/videos-page'" >⬅ Back</button>
+        <h2 id="videoTitle">Loading...</h2>
+        <iframe id="videoPlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        <p id="videoDescription">Fetching description...</p>
+    </div>
+
+    <script>
+        function getVideoIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("videoId");
+        }
+
+        function fetchVideoDetails(videoId) {
+            const proxyUrl = "https://api.allorigins.win/get?url=";
+            const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            const fullUrl = proxyUrl + encodeURIComponent(youtubeUrl);
+
+            fetch(fullUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const html = data.contents;
+
+                    // Extract title
+                    const titleMatch = html.match(/<title>(.*?)<\/title>/);
+                    const title = titleMatch ? titleMatch[1].replace(" - YouTube", "") : "Unknown Title";
+                    document.getElementById("videoTitle").innerText = title;
+
+                    // Extract description
+                    const descMatch = html.match(/"shortDescription":"(.*?)"/);
+                    const description = descMatch ? descMatch[1].replace(/\\n/g, "\n") : "No description available.";
+                    document.getElementById("videoDescription").innerText = description;
+                })
+                .catch(error => {
+                    console.error("Error fetching video details:", error);
+                    document.getElementById("videoTitle").innerText = "Video not found";
+                    document.getElementById("videoDescription").innerText = "Unable to fetch description.";
+                });
+        }
+
+        function loadVideo() {
+            const videoId = getVideoIdFromUrl();
+            if (videoId) {
+                document.getElementById("videoPlayer").src = `https://www.youtube.com/embed/${videoId}`;
+                fetchVideoDetails(videoId);
+            } else {
+                document.body.innerHTML = "<h2>Invalid video ID</h2>";
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        loadVideo();
+    </script>
+</body>
+
+</html>

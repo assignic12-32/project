@@ -1,0 +1,21 @@
+<!-- profile.html -->
+<div class="profile-card">
+    <h2 id="username">Loading...</h2>
+  
+    <h3>Last Generated Strategy</h3>
+    <p id="last-strategy">Loading...</p>
+  
+    <h3>Last 15-Day Plan</h3>
+    <p id="last-plan">Loading...</p>
+  </div>
+  
+  <script>
+    fetch('/profile')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('username').innerText = data.name;
+        document.getElementById('last-strategy').innerText = data.lastStrategy || "No strategy found.";
+        document.getElementById('last-plan').innerText = data.lastPlan || "No plan found.";
+      });
+  </script>
+  
